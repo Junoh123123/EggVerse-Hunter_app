@@ -515,6 +515,8 @@ h1 {
   overflow: hidden;
   animation: pulseGlow 2s ease-in-out infinite;
   will-change: transform;
+  /* 기본 상태를 큰 버튼으로 강제 설정 */
+  transform: scale(1) translate3d(0,0,0) !important;
 }
 
 #clickBtn::before {
@@ -1198,123 +1200,139 @@ h1 {
     height: 100vh;
     max-height: 100vh;
     overflow: hidden;
-    padding: 8px;
+    padding: 12px;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
   }
   
   h1 { 
-    font-size: 1.5rem; 
-    margin-bottom: 8px;
+    font-size: 1.8rem; 
+    margin-bottom: 12px;
+    margin-top: 0;
+    flex-shrink: 0;
   }
   
   #stats {
-    padding: 8px;
-    margin: 5px auto;
+    padding: 10px;
+    margin: 0 auto;
     flex-shrink: 0;
     min-height: auto;
+    width: 100%;
+    max-width: 400px;
   }
   
   .stat-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 6px;
-    font-size: 0.7rem;
+    gap: 8px;
+    font-size: 0.75rem;
   }
   
   .stat-item {
-    padding: 6px;
-    min-height: 40px;
+    padding: 8px;
+    min-height: 45px;
   }
   
   .stat-item.level-highlight {
-    padding: 8px;
+    padding: 10px;
     border: 2px solid #FFD700;
   }
   
   .level-value {
-    font-size: 1.3rem !important;
+    font-size: 1.4rem !important;
   }
   
   .stat-value {
-    font-size: 0.8rem;
+    font-size: 0.85rem;
   }
   
-  /* EXP와 Ticket 바 컨테이너 크기 줄이기 */
+  /* EXP와 Ticket 바 컨테이너 크기 조정 */
   .exp-container, .ticket-container {
-    margin-top: 8px;
-    padding: 6px;
+    margin-top: 10px;
+    padding: 8px;
   }
   
   .exp-label, .ticket-label {
-    font-size: 0.75rem;
-    margin-bottom: 4px;
+    font-size: 0.8rem;
+    margin-bottom: 6px;
   }
   
   .exp-bar, .ticket-bar {
-    height: 15px;
+    height: 18px;
   }
   
   .exp-text, .ticket-text {
-    font-size: 0.7rem;
-  }
-  
-  /* 콤보 컨테이너 크기 줄이기 */
-  .combo-container {
-    min-height: 40px;
-    margin: 8px auto;
-  }
-  
-  #comboDisplay {
-    padding: 6px 12px;
-  }
-  
-  .combo-count {
-    font-size: 0.9rem;
-  }
-  
-  .combo-bonus {
     font-size: 0.75rem;
   }
   
+  /* 콤보 컨테이너 크기 조정 */
+  .combo-container {
+    min-height: 50px;
+    margin: 10px auto;
+    max-width: 400px;
+    flex-shrink: 0;
+  }
+  
+  #comboDisplay {
+    padding: 8px 16px;
+  }
+  
+  .combo-count {
+    font-size: 1rem;
+  }
+  
+  .combo-bonus {
+    font-size: 0.8rem;
+  }
+  
   #rarityBar {
-    padding: 6px;
-    margin: 8px auto;
-    font-size: 0.6rem;
+    padding: 8px;
+    margin: 10px auto;
+    font-size: 0.65rem;
+    max-width: 400px;
+    flex-shrink: 0;
   }
   
   /* 컨트롤 버튼들 크기 최적화 */
   .controls {
-    gap: 8px;
-    margin: 8px 0;
+    gap: 10px;
+    margin: 12px 0;
     flex-shrink: 0;
-    padding: 0 8px;
+    padding: 0;
+    width: 100%;
+    max-width: 400px;
   }
   
   #clickBtn {
-    padding: 15px 20px;
-    font-size: 1rem;
+    padding: 18px 24px;
+    font-size: 1.1rem;
     grid-column: 1 / -1;
-    margin: 0 8px;
+    margin: 0;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    min-height: 60px;
+    /* 기본 상태를 큰 버튼으로 설정 */
+    transform: scale(1) translate3d(0,0,0);
   }
   
   #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
-    padding: 8px 12px;
-    font-size: 0.7rem;
+    padding: 10px 16px;
+    font-size: 0.75rem;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
   }
   
   /* 에그박스 최적화 */
   #eggBox {
-    grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
-    gap: 6px;
-    padding: 8px;
-    max-height: 30vh;
+    grid-template-columns: repeat(auto-fill, minmax(90px, 1fr));
+    gap: 8px;
+    padding: 10px;
+    max-height: 25vh;
     overflow-y: auto;
-    flex-grow: 1;
+    flex-grow: 0;
+    flex-shrink: 1;
   }
   
   /* 모달 최적화 */
@@ -1435,70 +1453,85 @@ h1 {
   }
   
   .container {
-    padding: 8px;
+    padding: 15px;
     justify-content: center;
-    gap: 12px;
+    align-items: center;
+    gap: 15px;
   }
   
   h1 {
-    font-size: 1.4rem;
-    margin-bottom: 12px;
-    margin-top: 8px;
-  }
-  
-  #stats {
-    padding: 8px;
-    margin: 8px auto;
+    font-size: 1.6rem;
+    margin-bottom: 15px;
+    margin-top: 0;
     flex-shrink: 0;
   }
   
+  #stats {
+    padding: 12px;
+    margin: 0 auto;
+    flex-shrink: 0;
+    width: 100%;
+    max-width: 350px;
+  }
+  
   .stat-grid {
-    gap: 6px;
-    font-size: 0.7rem;
-  }
-  
-  .stat-item {
-    padding: 6px;
-    min-height: 40px;
-  }
-  
-  .combo-container {
-    min-height: 45px;
-    margin: 8px auto;
-  }
-  
-  #comboDisplay {
-    padding: 8px 16px;
-  }
-  
-  #rarityBar {
-    padding: 8px;
-    margin: 8px auto;
-    font-size: 0.65rem;
-  }
-  
-  .controls {
-    padding: 0 16px;
-    gap: 10px;
-    margin: 12px 0;
-  }
-  
-  #clickBtn {
-    padding: 16px 20px;
-    font-size: 1.1rem;
-    margin: 0 8px;
-    min-height: 55px;
-  }
-  
-  #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
-    padding: 10px 14px;
+    gap: 8px;
     font-size: 0.75rem;
   }
   
-  #eggBox {
-    max-height: 28vh;
+  .stat-item {
     padding: 8px;
-    margin-top: 8px;
+    min-height: 45px;
+  }
+  
+  .combo-container {
+    min-height: 50px;
+    margin: 12px auto;
+    max-width: 350px;
+    flex-shrink: 0;
+  }
+  
+  #comboDisplay {
+    padding: 10px 18px;
+  }
+  
+  #rarityBar {
+    padding: 10px;
+    margin: 12px auto;
+    font-size: 0.7rem;
+    max-width: 350px;
+    flex-shrink: 0;
+  }
+  
+  .controls {
+    padding: 0;
+    gap: 12px;
+    margin: 15px 0;
+    width: 100%;
+    max-width: 350px;
+    flex-shrink: 0;
+  }
+  
+  #clickBtn {
+    padding: 20px 24px;
+    font-size: 1.2rem;
+    margin: 0;
+    min-height: 65px;
+    /* 기본 상태를 큰 버튼으로 강제 설정 */
+    transform: scale(1) translate3d(0,0,0) !important;
+  }
+  
+  #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
+    padding: 12px 16px;
+    font-size: 0.8rem;
+  }
+  
+  #eggBox {
+    max-height: 20vh;
+    padding: 10px;
+    margin-top: 0;
+    flex-grow: 0;
+    flex-shrink: 1;
   }
   
   /* iPhone 16 Pro Max Gacha 모달 최적화 */

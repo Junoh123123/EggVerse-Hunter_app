@@ -62,6 +62,25 @@ class GameController {
         e.preventDefault();
       }, false);
     }
+    
+    // Hunt Eggs 버튼을 항상 기본 큰 상태로 유지
+    const clickBtn = document.getElementById("clickBtn");
+    if (clickBtn) {
+      // 기본 스타일을 큰 상태로 강제 설정
+      const ensureLargeButton = () => {
+        clickBtn.style.transform = "scale(1) translate3d(0,0,0)";
+        clickBtn.style.transition = "transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.3s ease";
+      };
+      
+      // 페이지 로드시 즉시 적용
+      ensureLargeButton();
+      
+      // DOM이 변경될 때마다 확인
+      setTimeout(ensureLargeButton, 100);
+      
+      // 주기적으로 확인해서 버튼이 작아지지 않도록 보장
+      setInterval(ensureLargeButton, 1000);
+    }
   }
 
   static setupEventListeners() {
