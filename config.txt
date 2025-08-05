@@ -1,0 +1,20 @@
+{
+    "path_checkpoints": [
+        "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\checkpoints"
+    ],
+    "path_loras": [
+        "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\loras"
+    ],
+    "path_embeddings": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\embeddings",
+    "path_vae_approx": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\vae_approx",
+    "path_vae": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\vae",
+    "path_upscale_models": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\upscale_models",
+    "path_inpaint": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\inpaint",
+    "path_controlnet": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\controlnet",
+    "path_clip_vision": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\clip_vision",
+    "path_fooocus_expansion": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\prompt_expansion\\fooocus_expansion",
+    "path_wildcards": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\wildcards",
+    "path_safety_checker": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\safety_checker",
+    "path_sam": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\models\\sam",
+    "path_outputs": "C:\\Users\\USER\\Desktop\\Fooocus-RTX5070Ti\\Fooocus\\outputs"
+}
