@@ -1,0 +1,2327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+<title>🥚 EggVerse Hunter - NFT Gacha Game</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+  
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+  }
+  
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    font-family: 'Orbitron', monospace;
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1a1a2e 100%);
+    min-height: 100vh;
+    color: #ffffff;
+    overflow-x: hidden;
+    position: relative;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    transform: translate3d(0,0,0);
+  }
+  
+  /* Animated background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.2) 0%, transparent 50%);
+    animation: float 6s ease-in-out infinite;
+    z-index: -1;
+    will-change: transform;
+  }
+  
+  @keyframes float {
+    0%, 100% { transform: translateY(0px) rotate(0deg) translate3d(0,0,0); }
+    50% { transform: translateY(-20px) rotate(1deg) translate3d(0,0,0); }
+  }
+  
+  .container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 20px;
+    position: relative;
+    z-index: 1;
+  }
+  
+  h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    font-weight: 900;
+    background: linear-gradient(45deg, #00d4ff, #ff00ff, #ffff00, #00ff88);
+    background-size: 400% 400%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    animation: gradientShift 3s ease-in-out infinite;
+    margin: 20px 0;
+    text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+    will-change: background-position;
+  }
+  
+  @keyframes gradientShift {
+    0%, 100% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+  }
+  
+  #stats {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(30, 30, 60, 0.8));
+    border: 2px solid #00d4ff;
+    border-radius: 20px;
+    padding: 20px;
+    margin: 10px auto;
+    max-width: 800px;
+    box-shadow: 0 0 40px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.1);
+    backdrop-filter: blur(5px);
+    transform: translate3d(0,0,0);
+  }
+  
+  .stat-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    font-size: 1.1rem;
+    font-weight: 700;
+  }
+  
+  .stat-item {
+    text-align: center;
+    padding: 10px;
+    background: rgba(0, 212, 255, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(0, 212, 255, 0.3);
+  }
+  
+  .stat-value {
+    display: block;
+    font-size: 1.4rem;
+    color: #00ff88;
+    margin-top: 5px;
+  }
+  
+  .exp-container {
+    margin-top: 15px;
+    padding: 10px;
+    background: rgba(255, 215, 0, 0.1);
+    border-radius: 10px;
+    border: 1px solid rgba(255, 215, 0, 0.3);
+  }
+  
+  .exp-label {
+    text-align: center;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: #ffd700;
+  }
+  
+  .exp-bar {
+    position: relative;
+    height: 20px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 215, 0, 0.5);
+  }
+  
+  .exp-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd700, #ffed4e);
+    width: 0%;
+    border-radius: 10px;
+    transition: width 0.3s ease;
+  }
+  
+  .exp-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+  }
+  
+  #rarityBar {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.8), rgba(30, 30, 60, 0.9), rgba(0, 0, 0, 0.8));
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 15px;
+    padding: 15px;
+    margin: 20px auto;
+    max-width: 90%;
+    font-size: 0.9rem;
+    text-align: center;
+    backdrop-filter: blur(5px);
+  }
+  
+  #comboDisplay {
+    background: linear-gradient(135deg, rgba(255, 107, 53, 0.15), rgba(247, 147, 30, 0.15));
+    border: 2px solid rgba(255, 107, 53, 0.4);
+    border-radius: 15px;
+    padding: 10px 20px;
+    margin: 10px auto;
+    max-width: 400px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+    animation: comboGlow 2s ease-in-out infinite;
+    transition: all 0.3s ease;
+  }
+  
+  @keyframes comboGlow {
+    0%, 100% { 
+      box-shadow: 0 0 15px rgba(255, 107, 53, 0.3);
+      border-color: rgba(255, 107, 53, 0.4);
+    }
+    50% { 
+      box-shadow: 0 0 25px rgba(255, 107, 53, 0.5);
+      border-color: rgba(255, 107, 53, 0.6);
+    }
+  }
+  
+  .combo-info {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+  }
+  
+  .combo-count {
+    color: #ff6b35;
+    font-size: 1.1rem;
+    text-shadow: 0 0 10px rgba(255, 107, 53, 0.5);
+  }
+  
+  .combo-bonus {
+    color: #00ff88;
+    font-size: 0.9rem;
+    text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+  }
+  
+  .controls {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    margin: 30px 0;
+  }
+  
+  #clickBtn {
+    padding: 25px 50px;
+    font-size: 1.6rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 900;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ff6b35, #f7931e, #ffcc02);
+    background-size: 200% 200%;
+    color: #000;
+    border: none;
+    border-radius: 25px;
+    box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+    transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1),
+                background-position 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    overflow: hidden;
+    animation: pulseGlow 2s ease-in-out infinite;
+    will-change: transform;
+    transform: translate3d(0,0,0);
+  }
+  
+  #clickBtn::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.4), transparent);
+    transition: transform 0.5s ease;
+    will-change: transform;
+  }
+  
+  #clickBtn:hover::before {
+    transform: translateX(200%);
+  }
+  
+  #clickBtn:hover {
+    transform: translateY(-3px) scale(1.05) translate3d(0,0,0);
+    box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
+    background-position: 100% 100%;
+  }
+  
+  #clickBtn:active {
+    transform: translateY(0) scale(0.98) translate3d(0,0,0);
+    transition: transform 0.1s ease;
+  }
+  
+  @keyframes pulseGlow {
+    0%, 100% { box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4); }
+    50% { box-shadow: 0 8px 35px rgba(255, 107, 53, 0.7); }
+  }
+  
+  #gachaBtn {
+    padding: 18px 40px;
+    font-size: 1.2rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(45deg, #4CAF50, #45a049, #2e7d32);
+    color: white;
+    border: 2px solid #00ff88;
+    border-radius: 18px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  }
+  
+  #gachaBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+    border-color: #00ff88;
+  }
+  
+  #gachaBtn:disabled {
+    background: linear-gradient(45deg, #555, #333);
+    color: #999;
+    border-color: #555;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+  
+  #galleryToggle {
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(45deg, #9c27b0, #673ab7, #512da8);
+    color: white;
+    border: 2px solid #ff00ff;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(156, 39, 176, 0.4);
+  }
+
+  #galleryToggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(156, 39, 176, 0.6);
+  }
+
+  #dexToggle {
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(45deg, #795548, #5d4037, #3e2723);
+    color: white;
+    border: 2px solid #8d6e63;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(121, 85, 72, 0.4);
+  }
+
+  #dexToggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(121, 85, 72, 0.6);
+  }
+
+  #exchangeToggle {
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(45deg, #ff9800, #f57c00, #e65100);
+    color: white;
+    border: 2px solid #ffb74d;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(255, 152, 0, 0.4);
+  }
+
+  #exchangeToggle:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(255, 152, 0, 0.6);
+  }
+
+  #autoClickBtn {
+    padding: 15px 35px;
+    font-size: 1rem;
+    font-family: 'Orbitron', monospace;
+    font-weight: 700;
+    cursor: pointer;
+    background: linear-gradient(45deg, #607d8b, #455a64, #263238);
+    color: white;
+    border: 2px solid #78909c;
+    border-radius: 15px;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    box-shadow: 0 6px 20px rgba(96, 125, 139, 0.4);
+  }
+
+  #autoClickBtn:hover {
+    transform: scale(1.05);
+    box-shadow: 0 8px 25px rgba(96, 125, 139, 0.6);
+  }
+
+  #autoClickBtn.active {
+    background: linear-gradient(45deg, #4caf50, #388e3c, #2e7d32);
+    border-color: #66bb6a;
+    box-shadow: 0 6px 20px rgba(76, 175, 80, 0.4);
+  }
+
+  #autoClickBtn.active:hover {
+    box-shadow: 0 8px 25px rgba(76, 175, 80, 0.6);
+  }
+
+  #eggBox {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 15px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.6), rgba(30, 30, 60, 0.7));
+    border: 2px solid rgba(0, 212, 255, 0.3);
+    border-radius: 20px;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+    margin: 20px 0;
+    max-width: 100%;
+    overflow: hidden;
+  }
+
+  /* Modal Styles */
+  .modal {
+    position: fixed;
+    z-index: 2000;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.8);
+    backdrop-filter: blur(3px);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    will-change: opacity;
+  }
+
+  .modal-content {
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.95), rgba(30, 30, 60, 0.95));
+    border: 2px solid rgba(139, 69, 19, 0.7);
+    border-radius: 20px;
+    padding: 20px;
+    width: 90%;
+    max-width: 1000px;
+    max-height: 80vh;
+    position: relative;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 0 50px rgba(139, 69, 19, 0.4);
+    animation: modalSlideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform, opacity;
+    transform: translate3d(0,0,0);
+  }
+
+  @keyframes modalSlideIn {
+    from {
+      opacity: 0;
+      transform: scale(0.8) translateY(-30px) translate3d(0,0,0);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1) translateY(0) translate3d(0,0,0);
+    }
+  }
+
+  .modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(139, 69, 19, 0.3);
+  }
+
+  .modal-header h3 {
+    color: #8d6e63;
+    font-size: 1.3rem;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+
+  .close-btn {
+    color: #8d6e63;
+    font-size: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    line-height: 1;
+  }
+
+  .close-btn:hover {
+    color: #ff6b35;
+  }
+
+  #collectionProgress {
+    font-size: 1rem;
+    color: #a1887f;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 20px;
+    padding: 8px;
+    background: rgba(139, 69, 19, 0.2);
+    border-radius: 10px;
+  }
+
+  .codex-scroll {
+    max-height: 60vh;
+    overflow-y: auto;
+    padding-right: 10px;
+    transform: translate3d(0,0,0);
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+    will-change: scroll-position;
+    contain: layout style paint;
+    backface-visibility: hidden;
+  }
+
+  .codex-scroll::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .codex-scroll::-webkit-scrollbar-track {
+    background: rgba(139, 69, 19, 0.2);
+    border-radius: 4px;
+  }
+
+  .codex-scroll::-webkit-scrollbar-thumb {
+    background: rgba(139, 69, 19, 0.6);
+    border-radius: 4px;
+    transition: background 0.2s ease;
+  }
+
+  .codex-scroll::-webkit-scrollbar-thumb:hover {
+    background: rgba(139, 69, 19, 0.8);
+  }
+
+  .rarity-section {
+    margin-bottom: 25px;
+    contain: layout style paint;
+    will-change: transform;
+    transform: translate3d(0,0,0);
+  }
+
+  .rarity-header {
+    font-size: 1rem;
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+    padding: 8px;
+    border-radius: 8px;
+    text-align: center;
+  }
+
+  .codex-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+    contain: layout style paint;
+    transform: translate3d(0,0,0);
+  }
+
+  .codex-item {
+    position: relative;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: transform 0.15s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.15s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.05), rgba(255, 255, 255, 0.02));
+    border: 2px solid transparent;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    height: 120px;
+    will-change: transform;
+    transform: translate3d(0,0,0);
+    contain: layout style paint;
+    backface-visibility: hidden;
+  }
+
+  .codex-item.discovered {
+    border-color: #4caf50;
+    box-shadow: 0 2px 10px rgba(76, 175, 80, 0.3);
+  }
+
+  .codex-item.undiscovered {
+    filter: brightness(0.3);
+    border-color: #555;
+  }
+
+  .codex-item:hover {
+    transform: translateY(-2px) scale(1.03) translate3d(0,0,0);
+  }
+
+  .codex-egg-img {
+    width: 100%;
+    height: 75px;
+    object-fit: cover;
+    transform: translate3d(0,0,0);
+    backface-visibility: hidden;
+  }
+
+  .codex-egg-info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 4px;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-align: center;
+    color: white;
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.9);
+    text-transform: uppercase;
+    letter-spacing: 0.3px;
+    line-height: 1;
+    min-height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .undiscovered .codex-egg-info {
+    color: #666;
+  }
+
+  .discovery-badge {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    background: #4caf50;
+    color: white;
+    font-size: 0.5rem;
+    padding: 1px 4px;
+    border-radius: 8px;
+    font-weight: 700;
+  }
+
+  .quantity-badge {
+    position: absolute;
+    bottom: 3px;
+    right: 3px;
+    background: rgba(255, 107, 53, 0.95);
+    color: white;
+    font-size: 0.7rem;
+    padding: 3px 6px;
+    border-radius: 12px;
+    font-weight: 900;
+    border: 2px solid rgba(255, 255, 255, 0.8);
+    min-width: 20px;
+    text-align: center;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
+    z-index: 10;
+  }
+
+  .rarity-progress {
+    font-size: 0.8rem;
+    color: #ccc;
+    text-align: center;
+    margin-top: 3px;
+  }
+  
+  .egg-item {
+    position: relative;
+    border-radius: 15px;
+    overflow: hidden;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.05));
+    border: 2px solid transparent;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+    will-change: transform;
+    transform: translate3d(0,0,0);
+  }
+  
+  .egg-item:hover {
+    transform: translateY(-5px) scale(1.05) translate3d(0,0,0);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5);
+  }
+  
+  .egg-item img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+    will-change: transform;
+  }
+  
+  .egg-item:hover img {
+    transform: scale(1.1) translate3d(0,0,0);
+  }
+  
+  .egg-rarity {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 10px 8px;
+    font-size: 0.8rem;
+    font-weight: 900;
+    text-align: center;
+    color: white;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    font-family: 'Orbitron', monospace;
+    line-height: 1.2;
+    min-height: 45px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  
+  /* Game-standard rarity colors */
+  .rarity-COMMON { 
+    background: linear-gradient(45deg, #9e9e9e, #757575);
+    border-color: #9e9e9e;
+  }
+  .rarity-UNCOMMON { 
+    background: linear-gradient(45deg, #4caf50, #388e3c);
+    border-color: #4caf50;
+  }
+  .rarity-RARE { 
+    background: linear-gradient(45deg, #2196f3, #1976d2);
+    border-color: #2196f3;
+  }
+  .rarity-EPIC { 
+    background: linear-gradient(45deg, #9c27b0, #7b1fa2);
+    border-color: #9c27b0;
+  }
+  .rarity-UNIQUE { 
+    background: linear-gradient(45deg, #ff9800, #f57c00);
+    border-color: #ff9800;
+  }
+  .rarity-LEGENDARY { 
+    background: linear-gradient(45deg, #f44336, #d32f2f);
+    border-color: #f44336;
+  }
+  .rarity-MYSTIC { 
+    background: linear-gradient(45deg, #e91e63, #c2185b);
+    border-color: #e91e63;
+  }
+  .rarity-GALACTIC { 
+    background: linear-gradient(45deg, #673ab7, #512da8, #311b92);
+    border-color: #673ab7;
+    box-shadow: 0 0 20px rgba(103, 58, 183, 0.6);
+  }
+  
+  /* Special effect styles */
+  .effect-holographic {
+    animation: holographicShimmer 3s ease-in-out infinite;
+  }
+  
+  @keyframes holographicShimmer {
+    0%, 100% { 
+      box-shadow: 0 0 30px rgba(255, 255, 255, 0.8), 
+                  inset 0 0 30px rgba(255, 255, 255, 0.2);
+    }
+    50% { 
+      box-shadow: 0 0 50px rgba(0, 255, 255, 0.8), 
+                  inset 0 0 30px rgba(255, 0, 255, 0.2);
+    }
+  }
+  
+  .effect-rainbow {
+    animation: rainbowGlow 2s ease-in-out infinite;
+  }
+  
+  @keyframes rainbowGlow {
+    0% { box-shadow: 0 0 20px rgba(255, 0, 0, 0.8); }
+    16% { box-shadow: 0 0 20px rgba(255, 165, 0, 0.8); }
+    33% { box-shadow: 0 0 20px rgba(255, 255, 0, 0.8); }
+    50% { box-shadow: 0 0 20px rgba(0, 255, 0, 0.8); }
+    66% { box-shadow: 0 0 20px rgba(0, 0, 255, 0.8); }
+    83% { box-shadow: 0 0 20px rgba(75, 0, 130, 0.8); }
+    100% { box-shadow: 0 0 20px rgba(238, 130, 238, 0.8); }
+  }
+  
+  .effect-glitter {
+    animation: glitterSparkle 1.5s ease-in-out infinite;
+  }
+  
+  @keyframes glitterSparkle {
+    0%, 100% { 
+      box-shadow: 0 0 15px rgba(255, 215, 0, 0.8);
+    }
+    25% { 
+      box-shadow: 0 0 25px rgba(255, 215, 0, 1), 
+                  5px 5px 10px rgba(255, 255, 255, 0.6);
+    }
+    50% { 
+      box-shadow: 0 0 35px rgba(255, 215, 0, 0.9), 
+                  -5px -5px 15px rgba(255, 255, 255, 0.8);
+    }
+    75% { 
+      box-shadow: 0 0 25px rgba(255, 215, 0, 1), 
+                  3px -3px 12px rgba(255, 255, 255, 0.7);
+    }
+  }
+  
+  .effect-ethereal {
+    animation: etherealFloat 4s ease-in-out infinite;
+  }
+  
+  @keyframes etherealFloat {
+    0%, 100% { 
+      box-shadow: 0 0 20px rgba(200, 200, 255, 0.6);
+      transform: translateY(0px);
+    }
+    50% { 
+      box-shadow: 0 0 40px rgba(150, 150, 255, 0.9);
+      transform: translateY(-3px);
+    }
+  }
+  
+  .effect-cosmic {
+    animation: cosmicPulse 2.5s ease-in-out infinite;
+  }
+  
+  @keyframes cosmicPulse {
+    0%, 100% { 
+      box-shadow: 0 0 25px rgba(75, 0, 130, 0.8), 
+                  0 0 50px rgba(138, 43, 226, 0.4);
+    }
+    50% { 
+      box-shadow: 0 0 40px rgba(75, 0, 130, 1), 
+                  0 0 80px rgba(138, 43, 226, 0.7),
+                  0 0 120px rgba(147, 0, 211, 0.3);
+    }
+  }
+  
+  .game-info {
+    margin: 30px auto;
+    max-width: 600px;
+    padding: 20px;
+    background: linear-gradient(135deg, rgba(0, 0, 0, 0.7), rgba(30, 30, 60, 0.8));
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 15px;
+    text-align: center;
+    backdrop-filter: blur(5px);
+  }
+  
+  .game-info h3 {
+    color: #00d4ff;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+  }
+  
+  .game-info p {
+    font-size: 0.9rem;
+    line-height: 1.6;
+    color: #ccc;
+    margin: 8px 0;
+  }
+  
+  .shortcuts {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 15px;
+    flex-wrap: wrap;
+  }
+  
+  .shortcut {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 0.8rem;
+    color: #00ff88;
+    font-weight: 700;
+  }
+  
+  .gacha-animation {
+    animation: gachaSpawn 0.8s ease-out;
+  }
+  
+  @keyframes gachaSpawn {
+    0% { 
+      transform: scale(0) rotate(-180deg) translate3d(0,0,0);
+      opacity: 0;
+    }
+    50% {
+      transform: scale(1.2) rotate(-90deg) translate3d(0,0,0);
+      opacity: 0.8;
+    }
+    100% { 
+      transform: scale(1) rotate(0deg) translate3d(0,0,0);
+      opacity: 1;
+    }
+  }
+  
+  .notification {
+    position: fixed;
+    right: 20px;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 60, 0.9));
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 15px 25px;
+    border-radius: 12px;
+    z-index: 1000;
+    font-size: 0.9rem;
+    font-weight: 700;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+    max-width: 350px;
+    word-wrap: break-word;
+    font-family: 'Orbitron', monospace;
+  }
+  
+  @keyframes slideIn {
+    from { 
+      transform: translateX(100%) scale(0.8);
+      opacity: 0;
+    }
+    to { 
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+  }
+  
+  @keyframes slideOut {
+    from { 
+      transform: translateX(0) scale(1);
+      opacity: 1;
+    }
+    to { 
+      transform: translateX(100%) scale(0.8);
+      opacity: 0;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    h1 { font-size: 2.5rem; }
+    .container { padding: 15px; }
+    #clickBtn { 
+      padding: 25px 40px;
+      font-size: 1.5rem;
+    }
+    .stat-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+    #eggBox {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+      padding: 15px;
+    }
+    
+    /* Mobile modal adjustments */
+    .modal-content {
+      width: 95%;
+      max-height: 85vh;
+      padding: 15px;
+    }
+    
+    .modal-header h3 {
+      font-size: 1.1rem;
+    }
+    
+    .codex-grid {
+      grid-template-columns: repeat(auto-fill, minmax(80px, 1fr));
+      gap: 8px;
+    }
+    
+    .codex-item {
+      height: 100px;
+    }
+    
+    .codex-egg-img {
+      height: 60px;
+    }
+    
+    .codex-egg-info {
+      font-size: 0.5rem;
+      min-height: 40px;
+    }
+    
+    .rarity-header {
+      font-size: 0.9rem;
+      padding: 6px;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+  <h1>🥚 EggVerse Hunter</h1>
+  
+  <!-- Stats Dashboard -->
+  <div id="stats">
+    <div class="stat-grid">
+      <div class="stat-item">
+        ⭐ Level
+        <span class="stat-value" id="level">1</span>
+      </div>
+      <div class="stat-item">
+        🎫 Tickets
+        <span class="stat-value" id="tickets">0</span>
+      </div>
+      <div class="stat-item">
+        🥚 Eggs
+        <span class="stat-value" id="eggCount">0</span>
+      </div>
+      <div class="stat-item">
+        👆 Total Clicks
+        <span class="stat-value" id="totalClicks">0</span>
+      </div>
+    </div>
+    
+    <!-- EXP Progress Bar -->
+    <div class="exp-container">
+      <div class="exp-label">✨ EXP Progress</div>
+      <div class="exp-bar">
+        <div class="exp-fill" id="expBar"></div>
+        <span class="exp-text" id="expText">0 / 100</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Combo Display -->
+  <div id="comboDisplay" style="display:none;">
+    <div class="combo-info">
+      <span class="combo-count">🔥 0x COMBO</span>
+      <span class="combo-bonus">+0.00% Luck</span>
+    </div>
+  </div>
+
+  <!-- Rarity Display -->
+  <div id="rarityBar">Start hunting to discover rare eggs!</div>
+
+  <!-- Game Controls -->
+  <div class="controls">
+    <button id="clickBtn">🥚 HUNT EGGS 🥚</button>
+    <button id="gachaBtn">🎰 Open Gacha</button>
+    <button id="autoClickBtn" style="display:none">⚡ Auto Hunt</button>
+    <button id="galleryToggle">📂 View Collection</button>
+    <button id="dexToggle">📖 Egg Codex</button>
+    <button id="exchangeToggle">🔄 Exchange Eggs</button>
+  </div>
+
+  <!-- Egg Collection Gallery -->
+  <div id="eggBox" style="display:none"></div>
+
+  <!-- Egg Codex Modal -->
+  <div id="codexModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🔍 Egg Codex</h3>
+        <span class="close-btn" onclick="toggleCodex()">&times;</span>
+      </div>
+      <div id="collectionProgress">Progress: 0/40 (0%)</div>
+      <div id="codexContent" class="codex-scroll"></div>
+    </div>
+  </div>
+
+  <!-- Exchange Modal -->
+  <div id="exchangeModal" class="modal" style="display:none">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>🔄 Exchange Eggs for Tickets</h3>
+        <span class="close-btn" onclick="toggleExchange()">&times;</span>
+      </div>
+      <div id="exchangeContent" class="codex-scroll"></div>
+    </div>
+  </div>
+
+  <!-- Game Information -->
+  <div class="game-info">
+    <h3>🎮 Game Rules</h3>
+    <p>🥚 Click to hunt eggs and gain experience</p>
+    <p>⭐ Level up for bonus rewards and new features</p>
+    <p>🎫 Earn tickets every 100 clicks for gacha spins</p>
+    <p>🎲 Use gacha tickets for guaranteed rare egg discoveries</p>
+    <p>🔥 Combo system boosts experience with consecutive clicks</p>
+    <p>📚 Collect eggs to fill your Pokédex-style codex</p>
+    <p>💎 8 rarity tiers: Common → Galactic (most rare)</p>
+    <p>🆕 New discoveries give bonus experience</p>
+    <p>� Idle Rewards: Level 3 unlock - Get rewards when away!</p>
+    
+    <div class="shortcuts" style="font-family: 'Orbitron', monospace;">
+      <div class="shortcut">SPACE = Hunt</div>
+      <div class="shortcut">G = Gacha</div>
+      <div class="shortcut">D = Codex</div>
+      <div class="shortcut">R = Rules</div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* === Game State === */
+let score = 0, tickets = 0, totalClicks = 0;
+let autoClickUnlocked = false;
+let autoClickInterval = null;
+const rarities = ["COMMON","UNCOMMON","RARE","EPIC","UNIQUE","LEGENDARY","MYSTIC","GALACTIC"];
+const probs = [70, 18, 7, 3, 1.2, 0.6, 0.15, 0.05];
+const scoreValues = [1, 5, 15, 50, 150, 500, 1500, 5000]; // Score values for each rarity
+const eggs = [];
+const discoveredEggs = new Set(); // Track discovered egg types
+
+/* === Combo System === */
+let currentCombo = 0;
+let lastClickTime = 0;
+let comboTimer = null;
+const COMBO_TIMEOUT = 5000; // 5 seconds
+const BASE_COMBO_MILESTONE = 20; // Every 20 combos for base bonus
+const BASE_COMBO_BONUS = 0.03; // 0.03% per milestone
+const MAX_BASE_MILESTONES = 5; // 5 milestones (100 combo) = 0.15%
+const HUNDRED_COMBO_BONUS = 0.1; // 0.1% per 100 combo milestone starting from 200
+const MAX_TOTAL_BONUS = 0.7; // 0.7% max bonus (0.3% base + 0.7% combo = 1% total)
+
+/* === Exchange System === */
+const exchangeRates = {
+  // Eggs to tickets (how many eggs needed for 1 ticket)
+  COMMON: 10,      // 10 common eggs = 1 ticket (70% vs 18% = ~4x rarer, but more generous)
+  UNCOMMON: 3,     // 3 uncommon eggs = 1 ticket (baseline)
+  RARE: 1,         // 1 rare egg = 1 ticket (18% vs 7% = ~2.5x rarer)
+  EPIC: 0.5,       // 1 epic egg = 2 tickets (7% vs 3% = ~2.3x rarer)
+  UNIQUE: 0.25,    // 1 unique egg = 4 tickets (3% vs 1.2% = ~2.5x rarer)
+  LEGENDARY: 0.15, // 1 legendary egg = ~7 tickets (1.2% vs 0.6% = 2x rarer)
+  MYSTIC: 0.1,     // 1 mystic egg = 10 tickets (0.6% vs 0.15% = 4x rarer)
+  GALACTIC: 0.05   // 1 galactic egg = 20 tickets (0.15% vs 0.05% = 3x rarer)
+};
+
+/* Unlock thresholds */
+const unlocks = {
+  autoClick: 10000
+};
+
+/* Rarity colors for UI */
+const rarityColors = ['#9e9e9e', '#4caf50', '#2196f3', '#9c27b0', '#ff9800', '#f44336', '#e91e63', '#673ab7'];
+
+/* Egg varieties for each rarity */
+const eggTypes = {
+  COMMON: [
+    "Stone Egg", "Dirt Egg", "Sand Egg", "Clay Egg", "Pebble Egg", "Gravel Egg", "Mud Egg", "Dust Egg",
+    "Wood Egg", "Leaf Egg", "Grass Egg", "Moss Egg", "Vine Egg", "Bark Egg", "Root Egg", "Twig Egg",
+    "Water Drop Egg", "Cloud Egg", "Wind Egg", "Frost Egg", "Mist Egg", "Rain Egg", "Snow Egg"
+  ],
+  UNCOMMON: [
+    "Copper Egg", "Bronze Egg", "Silver Egg", "Iron Egg", "Tin Egg", "Lead Egg", "Zinc Egg",
+    "Crystal Egg", "Quartz Egg", "Jade Egg", "Amber Egg", "Pearl Egg", "Coral Egg", "Shell Egg",
+    "Sapphire Egg", "Emerald Egg", "Topaz Egg", "Amethyst Egg", "Opal Egg", "Turquoise Egg"
+  ],
+  RARE: [
+    "Diamond Egg", "Ruby Egg", "Lightning Egg", "Thunder Egg", "Ice Egg", "Flame Egg", "Lava Egg",
+    "Ocean Egg", "Starlight Egg", "Moonlight Egg", "Sunlight Egg", "Aurora Egg", "Comet Egg",
+    "Meteor Egg", "Prism Egg"
+  ],
+  EPIC: [
+    "Shadow Egg", "Void Egg", "Time Egg", "Space Egg", "Gravity Egg", "Plasma Egg", "Energy Egg",
+    "Dimension Egg", "Quantum Egg", "Cosmic Egg"
+  ],
+  UNIQUE: [
+    "Golden Egg", "Platinum Egg", "Mithril Egg", "Adamantium Egg", "Orichalcum Egg", "Ethereal Egg"
+  ],
+  LEGENDARY: [
+    "Dragon Egg", "Phoenix Egg", "Unicorn Egg", "Kraken Egg", "Leviathan Egg"
+  ],
+  MYSTIC: [
+    "Love Egg", "Fate Egg", "Soul Egg"
+  ],
+  GALACTIC: [
+    "Universe Egg", "Infinity Egg"
+  ]
+};
+
+/* NFT-style egg images */
+const eggImgs = [
+  "https://images.unsplash.com/photo-1518843875459-f738682238a6?w=160&h=160&fit=crop&auto=format", // COMMON 
+  "https://images.unsplash.com/photo-1587486913049-53fc88980cfc?w=160&h=160&fit=crop&auto=format", // UNCOMMON 
+  "https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=160&h=160&fit=crop&auto=format", // RARE 
+  "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?w=160&h=160&fit=crop&auto=format", // EPIC 
+  "https://images.unsplash.com/photo-1482049016688-2d3e1b311543?w=160&h=160&fit=crop&auto=format", // UNIQUE 
+  "https://images.unsplash.com/photo-1553062407-98eeb64c6a62?w=160&h=160&fit=crop&auto=format", // LEGENDARY 
+  "https://images.unsplash.com/photo-1446329813274-7c9036bd9a1f?w=160&h=160&fit=crop&auto=format", // MYSTIC 
+  "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=160&h=160&fit=crop&auto=format"  // GALACTIC 
+];
+
+/* === Generative Egg System === */
+const specialEffects = {
+  LEGENDARY: ["Holographic", "Rainbow", "Glitter"],
+  MYSTIC: ["Holographic", "Rainbow", "Glitter", "Ethereal"],
+  GALACTIC: ["Holographic", "Rainbow", "Glitter", "Ethereal", "Cosmic"]
+};
+
+const colorVariants = [
+  "Original", "Shiny", "Dark", "Light", "Pastel", "Neon", "Metallic"
+];
+
+function generateEggAttributes(rarityIndex) {
+  const rarity = rarities[rarityIndex];
+  let attributes = {
+    effect: "Normal",
+    color: "Original",
+    size: "Normal"
+  };
+  
+  // Special effects for high-tier rarities
+  if (specialEffects[rarity] && Math.random() < 0.15) { // 15% chance for special effect
+    const effects = specialEffects[rarity];
+    attributes.effect = effects[Math.floor(Math.random() * effects.length)];
+  }
+  
+  // Color variants (5% chance)
+  if (Math.random() < 0.05) {
+    attributes.color = colorVariants[Math.floor(Math.random() * colorVariants.length)];
+  }
+  
+  // Size variants (3% chance)
+  if (Math.random() < 0.03) {
+    attributes.size = Math.random() < 0.5 ? "Large" : "Small";
+  }
+  
+  return attributes;
+}
+
+/* === Utility Functions === */
+const rand = () => Math.random() * 100;
+
+/* === Combo System Functions === */
+function calculateComboBonus() {
+  // Base combo bonus: 0.03% per 20-combo milestone up to 100 combo (5 milestones = 0.15%)
+  const baseMilestones = Math.min(Math.floor(currentCombo / BASE_COMBO_MILESTONE), MAX_BASE_MILESTONES);
+  const baseBonus = baseMilestones * BASE_COMBO_BONUS;
+  
+  // Hundred combo milestones: 0.1% per 100 combo starting from 200 (200, 300, 400...)
+  const hundredMilestones = Math.max(0, Math.floor(currentCombo / 100) - 1); // -1 to start from 200
+  const milestoneBonus = hundredMilestones * HUNDRED_COMBO_BONUS;
+  
+  // Total bonus capped at 0.7% (so base 0.3% + combo 0.7% = 1% total)
+  return Math.min(baseBonus + milestoneBonus, MAX_TOTAL_BONUS);
+}
+
+function updateComboDisplay() {
+  const comboDisplay = document.getElementById("comboDisplay");
+  const comboCount = document.querySelector(".combo-count");
+  const comboBonus = document.querySelector(".combo-bonus");
+  
+  if (currentCombo > 0) {
+    comboDisplay.style.display = "block";
+    comboCount.textContent = `🔥 ${currentCombo}x COMBO`;
+    
+    const bonus = calculateComboBonus();
+    const totalLuck = 0.3 + bonus; // Base 0.3% + combo bonus
+    comboBonus.textContent = `${(totalLuck).toFixed(2)}% Luck`;
+    
+    // Add milestone celebration effects
+    if (currentCombo % BASE_COMBO_MILESTONE === 0 && currentCombo <= 100) {
+      // 20, 40, 60, 80, 100 combo milestones
+      comboDisplay.style.animation = "none";
+      setTimeout(() => {
+        comboDisplay.style.animation = "comboGlow 2s ease-in-out infinite";
+      }, 10);
+      showNotification(`🎯 ${currentCombo} COMBO! ${(totalLuck).toFixed(2)}% total luck!`);
+    } else if (currentCombo % 100 === 0 && currentCombo >= 200) {
+      // 200, 300, 400+ combo milestones
+      comboDisplay.style.animation = "none";
+      setTimeout(() => {
+        comboDisplay.style.animation = "comboGlow 2s ease-in-out infinite";
+      }, 10);
+      showNotification(`🎉 ${currentCombo} COMBO MILESTONE! ${(totalLuck).toFixed(2)}% total luck!`);
+    }
+  } else {
+    comboDisplay.style.display = "none";
+  }
+}
+
+function resetCombo() {
+  if (currentCombo > 0) {
+    currentCombo = 0;
+    updateComboDisplay();
+    if (comboTimer) {
+      clearTimeout(comboTimer);
+      comboTimer = null;
+    }
+  }
+}
+
+function incrementCombo() {
+  currentCombo++;
+  updateComboDisplay();
+  
+  // Reset timer
+  if (comboTimer) {
+    clearTimeout(comboTimer);
+  }
+  
+  // Set new timer
+  comboTimer = setTimeout(resetCombo, COMBO_TIMEOUT);
+  
+  // Subtle combo increment effect every 10 combos to avoid spam
+  if (currentCombo % 10 === 0) {
+    const btn = document.getElementById("clickBtn");
+    btn.style.boxShadow = "0 8px 35px rgba(255, 107, 53, 0.8)";
+    setTimeout(() => {
+      btn.style.boxShadow = "";
+    }, 150);
+  }
+}
+
+/* === Save/Load System === */
+function saveGameState() {
+  const gameState = {
+    score,
+    tickets,
+    totalClicks,
+    eggs: eggs.map(egg => ({
+      rarity: egg.rarity,
+      name: egg.name,
+      img: egg.img,
+      attributes: egg.attributes || { effect: "Normal", color: "Original", size: "Normal" }
+    })),
+    discoveredEggs: Array.from(discoveredEggs),
+    autoClickUnlocked,
+    currentCombo,
+    lastSaved: Date.now()
+  };
+  
+  try {
+    const saveData = JSON.stringify(gameState);
+    localStorage.setItem('eggVerseHunter_save', saveData);
+    console.log('Game saved:', gameState); // 디버깅용
+    return true;
+  } catch (e) {
+    console.warn('Failed to save game state:', e);
+    return false;
+  }
+}
+
+function loadGameState() {
+  try {
+    const saved = localStorage.getItem('eggVerseHunter_save');
+    if (!saved) {
+      console.log('No save data found');
+      return false;
+    }
+    
+    const gameState = JSON.parse(saved);
+    console.log('Loading game state:', gameState); // 디버깅용
+    
+    // 데이터 복원
+    score = gameState.score || 0;
+    tickets = gameState.tickets || 0;
+    totalClicks = gameState.totalClicks || 0;
+    autoClickUnlocked = gameState.autoClickUnlocked || false;
+    currentCombo = gameState.currentCombo || 0;
+    
+    // 콤보가 있으면 표시 업데이트
+    if (currentCombo > 0) {
+      updateComboDisplay();
+      // 5초 타이머 재시작 (게임 로드 후 콤보 유지)
+      comboTimer = setTimeout(resetCombo, COMBO_TIMEOUT);
+    }
+    
+    // 알 컬렉션 복원
+    if (gameState.eggs && Array.isArray(gameState.eggs)) {
+      eggs.length = 0; // 기존 배열 클리어
+      gameState.eggs.forEach(eggData => {
+        const egg = {
+          rarity: eggData.rarity,
+          name: eggData.name,
+          img: eggData.img,
+          attributes: eggData.attributes || { effect: "Normal", color: "Original", size: "Normal" }
+        };
+        eggs.push(egg);
+      });
+      console.log(`Restored ${eggs.length} eggs`);
+    }
+    
+    // 발견된 알 종류 복원
+    if (gameState.discoveredEggs && Array.isArray(gameState.discoveredEggs)) {
+      discoveredEggs.clear();
+      gameState.discoveredEggs.forEach(egg => discoveredEggs.add(egg));
+      console.log(`Restored ${discoveredEggs.size} discovered egg types`);
+    }
+    
+    console.log(`Game loaded - Score: ${score}, Tickets: ${tickets}, Clicks: ${totalClicks}, Eggs: ${eggs.length}, Combo: ${currentCombo}`);
+    return true;
+  } catch (e) {
+    console.warn('Failed to load game state:', e);
+    return false;
+  }
+}
+
+// 강제 저장 함수 (디버깅용)
+function forceSave() {
+  const result = saveGameState();
+  showNotification(result ? '💾 Game Force Saved!' : '❌ Save Failed!');
+}
+
+// 저장 데이터 확인 함수 (디버깅용)
+function checkSaveData() {
+  const saved = localStorage.getItem('eggVerseHunter_save');
+  if (saved) {
+    console.log('Current save data:', JSON.parse(saved));
+    showNotification('📊 Check console for save data');
+  } else {
+    showNotification('❌ No save data found');
+  }
+}
+
+// JSON 파일로 게임 데이터 다운로드
+function downloadSaveFile() {
+  const gameState = {
+    score,
+    tickets,
+    totalClicks,
+    eggs: eggs.map(egg => ({
+      rarity: egg.rarity,
+      name: egg.name,
+      img: egg.img
+    })),
+    discoveredEggs: Array.from(discoveredEggs),
+    autoClickUnlocked,
+    lastSaved: Date.now(),
+    version: "1.0"
+  };
+  
+  const dataStr = JSON.stringify(gameState, null, 2);
+  const dataBlob = new Blob([dataStr], {type: 'application/json'});
+  const url = URL.createObjectURL(dataBlob);
+  
+  const link = document.createElement('a');
+  link.href = url;
+  link.download = `EggVerse_Save_${new Date().toISOString().slice(0,10)}.json`;
+  link.click();
+  
+  URL.revokeObjectURL(url);
+  showNotification('💾 Save file downloaded!');
+}
+
+// JSON 파일에서 게임 데이터 로드
+function uploadSaveFile() {
+  const input = document.createElement('input');
+  input.type = 'file';
+  input.accept = '.json';
+  
+  input.onchange = function(event) {
+    const file = event.target.files[0];
+    if (!file) return;
+    
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      try {
+        const gameState = JSON.parse(e.target.result);
+        
+        // 데이터 유효성 검사
+        if (typeof gameState.score !== 'number' || !Array.isArray(gameState.eggs)) {
+          throw new Error('Invalid save file format');
+        }
+        
+        // 게임 상태 복원
+        score = gameState.score || 0;
+        tickets = gameState.tickets || 0;
+        totalClicks = gameState.totalClicks || 0;
+        autoClickUnlocked = gameState.autoClickUnlocked || false;
+        
+        // 알 컬렉션 복원
+        eggs.length = 0;
+        if (gameState.eggs) {
+          eggs.push(...gameState.eggs);
+        }
+        
+        // 발견된 알 복원
+        discoveredEggs.clear();
+        if (gameState.discoveredEggs) {
+          gameState.discoveredEggs.forEach(egg => discoveredEggs.add(egg));
+        }
+        
+        // localStorage에도 저장
+        localStorage.setItem('eggVerseHunter_save', JSON.stringify(gameState));
+        
+        // UI 업데이트
+        updateUI();
+        
+        // 갤러리 복원
+        if (eggs.length > 0) {
+          const eggBox = document.getElementById("eggBox");
+          eggBox.innerHTML = "";
+          eggs.forEach(egg => {
+            const eggElement = createEggElement(egg);
+            eggBox.appendChild(eggElement);
+          });
+        }
+        
+        // 오토클릭 버튼 복원
+        if (autoClickUnlocked) {
+          document.getElementById("autoClickBtn").style.display = "inline-block";
+        }
+        
+        showNotification('📁 Save file loaded successfully!');
+        
+      } catch (error) {
+        showNotification('❌ Invalid save file!');
+        console.error('Save file load error:', error);
+      }
+    };
+    
+    reader.readAsText(file);
+  };
+  
+  input.click();
+}
+
+// Auto-save every 30 seconds and on important events
+setInterval(() => {
+  if (score > 0 || eggs.length > 0) { // 게임 진행이 있을 때만 저장
+    saveGameState();
+    console.log('Auto-save triggered');
+  }
+}, 30000);
+
+function pickRarity(useComboBonus = false) {
+  let roll = rand();
+  
+  // Apply combo bonus to rare drop chance
+  if (useComboBonus && currentCombo > 0) {
+    const comboBonus = calculateComboBonus();
+    roll = roll - comboBonus; // Lower roll = better chance for rare items
+  }
+  
+  let acc = 0;
+  for (let i = 0; i < probs.length; i++) {
+    acc += probs[i];
+    if (roll < acc) return i;
+  }
+  return 0; // fallback to COMMON
+}
+
+function pickEggType(rarityIndex) {
+  const rarityName = rarities[rarityIndex];
+  const types = eggTypes[rarityName];
+  return types[Math.floor(Math.random() * types.length)];
+}
+
+function rarityCounts() {
+  return rarities.map((_, i) => eggs.filter(e => e.rarity === i).length);
+}
+
+function updateUI() {
+  document.getElementById("score").textContent = score.toLocaleString();
+  document.getElementById("tickets").textContent = tickets;
+  document.getElementById("eggCount").textContent = eggs.length;
+  document.getElementById("totalClicks").textContent = totalClicks.toLocaleString();
+
+  // Check for new unlocks
+  checkUnlocks();
+
+  /* Display rarity counts with colors */
+  const counts = rarityCounts();
+  let rarityText = "";
+  if (eggs.length > 0) {
+    const nonZeroRarities = counts.map((c, i) => c > 0 ? {
+      text: `${rarities[i]} ${c}`,
+      color: rarityColors[i]
+    } : null).filter(Boolean);
+    
+    if (nonZeroRarities.length > 0) {
+      rarityText = nonZeroRarities.map(r => 
+        `<span style="color: ${r.color}; font-weight: bold;">${r.text}</span>`
+      ).join(" | ");
+    } else {
+      rarityText = "No eggs collected yet";
+    }
+  } else {
+    rarityText = "Start hunting to discover rare eggs!";
+  }
+  document.getElementById("rarityBar").innerHTML = rarityText;
+  
+  /* Update gacha button */
+  const gachaBtn = document.getElementById("gachaBtn");
+  gachaBtn.disabled = tickets <= 0;
+  gachaBtn.textContent = tickets > 0 ? `🎰 Open Gacha (${tickets})` : "🎰 No Tickets";
+  
+  /* Update collection progress */
+  updateCollectionProgress();
+}
+
+function updateCollectionProgress() {
+  const totalEggs = Object.values(eggTypes).flat().length; // 40 total eggs
+  const discoveredCount = discoveredEggs.size;
+  const percentage = Math.floor((discoveredCount / totalEggs) * 100);
+  
+  const progressElement = document.getElementById("collectionProgress");
+  if (progressElement) {
+    progressElement.textContent = `Progress: ${discoveredCount}/${totalEggs} (${percentage}%)`;
+    
+    // Change color based on progress
+    if (percentage >= 100) {
+      progressElement.style.color = "#ffd700"; // Gold
+    } else if (percentage >= 75) {
+      progressElement.style.color = "#ff6b35"; // Orange
+    } else if (percentage >= 50) {
+      progressElement.style.color = "#4caf50"; // Green
+    } else {
+      progressElement.style.color = "#a1887f"; // Default brown
+    }
+  }
+}
+
+/* === Unlock System === */
+function checkUnlocks() {
+  // Auto-click unlock
+  if (!autoClickUnlocked && score >= unlocks.autoClick) {
+    autoClickUnlocked = true;
+    document.getElementById("autoClickBtn").style.display = "inline-block";
+    showNotification(`🔓 AUTO HUNT UNLOCKED! Click to toggle auto-hunting.`);
+    saveGameState();
+  }
+}
+
+function toggleAutoClick() {
+  if (!autoClickUnlocked) return;
+  
+  const btn = document.getElementById("autoClickBtn");
+  
+  if (autoClickInterval) {
+    // Stop auto-click
+    clearInterval(autoClickInterval);
+    autoClickInterval = null;
+    btn.classList.remove("active");
+    btn.textContent = "⚡ Auto Hunt";
+    showNotification("🛑 Auto Hunt Stopped");
+  } else {
+    // Start auto-click (every 3 seconds for balance)
+    autoClickInterval = setInterval(() => {
+      performClick(false); // false = don't show click animation
+    }, 3000);
+    btn.classList.add("active");
+    btn.textContent = "🛑 Stop Auto";
+    showNotification("⚡ Auto Hunt Started! (Every 3 seconds)");
+  }
+}
+
+function createEggElement(egg) {
+  const container = document.createElement("div");
+  container.className = `egg-item rarity-${rarities[egg.rarity]}`;
+  
+  // Add special effect classes
+  if (egg.attributes && egg.attributes.effect !== "Normal") {
+    container.classList.add(`effect-${egg.attributes.effect.toLowerCase()}`);
+  }
+  
+  const img = document.createElement("img");
+  img.src = egg.img;
+  img.alt = egg.name;
+  
+  // Create title with attributes
+  let title = `${egg.name} (${rarities[egg.rarity]})`;
+  if (egg.attributes) {
+    if (egg.attributes.effect !== "Normal") title += ` ✨${egg.attributes.effect}`;
+    if (egg.attributes.color !== "Original") title += ` ${egg.attributes.color}`;
+    if (egg.attributes.size !== "Normal") title += ` ${egg.attributes.size}`;
+  }
+  img.title = title;
+  
+  img.loading = "lazy"; // Lazy loading for better performance
+  img.decoding = "async"; // Async decoding
+  
+  // Fallback images with rarity colors
+  img.onerror = function() {
+    const colors = ['999999', '4CAF50', '2196F3', '9C27B0', 'FF9800', 'F44336', 'E91E63', '673AB7'];
+    this.src = `https://dummyimage.com/160x160/${colors[egg.rarity]}/fff&text=${encodeURIComponent(egg.name)}`;
+  };
+  
+  const rarityLabel = document.createElement("div");
+  rarityLabel.className = `egg-rarity rarity-${rarities[egg.rarity]}`;
+  
+  // Include attributes in display
+  let displayName = egg.name;
+  let attributeText = "";
+  if (egg.attributes) {
+    if (egg.attributes.effect !== "Normal") attributeText += ` ✨${egg.attributes.effect}`;
+    if (egg.attributes.color !== "Original") attributeText += ` ${egg.attributes.color}`;
+  }
+  
+  rarityLabel.innerHTML = `<div style="font-size: 0.7rem;">${displayName}</div><div style="font-size: 0.6rem;">${rarities[egg.rarity]}${attributeText}</div>`;
+  
+  container.appendChild(img);
+  container.appendChild(rarityLabel);
+  
+  return container;
+}
+
+/* === Main Click Handler === */
+function performClick(showAnimation = true) {
+  score++;
+  totalClicks++;
+  
+  // Update combo system (only for manual clicks)
+  if (showAnimation) {
+    incrementCombo();
+  }
+  
+  // Optimized click animation only for manual clicks
+  if (showAnimation) {
+    const btn = document.getElementById("clickBtn");
+    btn.style.transform = "scale(0.95) translate3d(0,0,0)";
+    requestAnimationFrame(() => {
+      setTimeout(() => {
+        btn.style.transform = "";
+      }, 100);
+    });
+  }
+  
+  // Enhanced lucky drop chance with combo bonus
+  const baseLuckyChance = 0.3;
+  const comboBonus = currentCombo > 0 ? calculateComboBonus() : 0;
+  const totalLuckyChance = baseLuckyChance + comboBonus;
+  
+  if (rand() < totalLuckyChance) {
+    instantGacha(true); // true = use combo bonus for rarity roll
+  }
+  
+  // Ticket rewards - based on total clicks, not score
+  if (totalClicks % 100 === 0) {
+    tickets++;
+    if (totalClicks % 1000 === 0) {
+      tickets++;
+    }
+    
+    showNotification(`🎫 Tickets Earned! (Total: ${tickets})`);
+  }
+  
+  updateUI();
+  saveGameState(); // Auto-save on significant events
+}
+
+document.getElementById("clickBtn").onclick = () => performClick(true);
+
+/* === Gacha System === */
+function instantGacha(useComboBonus = false) {
+  // Instant gacha from clicking - doesn't consume tickets
+  const idx = pickRarity(useComboBonus);
+  const eggName = pickEggType(idx);
+  const imgUrl = eggImgs[idx];
+  const attributes = generateEggAttributes(idx);
+  const newEgg = { 
+    rarity: idx, 
+    img: imgUrl, 
+    name: eggName,
+    attributes: attributes
+  };
+  eggs.push(newEgg);
+
+  // Add score based on rarity
+  score += scoreValues[idx];
+
+  // Track discovery
+  const eggKey = `${rarities[idx]}-${eggName}`;
+  const isNewDiscovery = !discoveredEggs.has(eggKey);
+  discoveredEggs.add(eggKey);
+
+  // Update gallery if open
+  const eggBox = document.getElementById("eggBox");
+  if (eggBox.style.display !== "none") {
+    updateGalleryDisplay();
+  }
+  
+  // Show discovery notification with score and special attributes
+  const comboText = useComboBonus && currentCombo > 0 ? ` [${currentCombo}x COMBO]` : "";
+  const specialText = attributes.effect !== "Normal" ? ` ✨${attributes.effect}✨` : "";
+  const colorText = attributes.color !== "Original" ? ` (${attributes.color})` : "";
+  
+  if (isNewDiscovery) {
+    showNotification(`🆕 NEW DISCOVERY! ${eggName}!${specialText}${colorText}${comboText} (+${scoreValues[idx]} pts)`);
+  } else {
+    showNotification(`🍀 Lucky Drop! ${eggName}!${specialText}${colorText}${comboText} (+${scoreValues[idx]} pts)`);
+  }
+  
+  updateUI();
+}
+
+function spinGacha() {
+  if (tickets <= 0) {
+    showNotification("❌ No tickets available!");
+    return;
+  }
+  
+  tickets--;
+  const idx = pickRarity(false); // Gacha spins don't use combo bonus
+  const eggName = pickEggType(idx);
+  const imgUrl = eggImgs[idx];
+  const attributes = generateEggAttributes(idx);
+  const newEgg = { 
+    rarity: idx, 
+    img: imgUrl, 
+    name: eggName,
+    attributes: attributes
+  };
+  eggs.push(newEgg);
+
+  // Add score based on rarity
+  score += scoreValues[idx];
+
+  // Track discovery
+  const eggKey = `${rarities[idx]}-${eggName}`;
+  const isNewDiscovery = !discoveredEggs.has(eggKey);
+  discoveredEggs.add(eggKey);
+
+  // Update gallery if open
+  const eggBox = document.getElementById("eggBox");
+  if (eggBox.style.display !== "none") {
+    updateGalleryDisplay();
+  }
+  
+  // Show discovery notification with score and special attributes
+  const specialText = attributes.effect !== "Normal" ? ` ✨${attributes.effect}✨` : "";
+  const colorText = attributes.color !== "Original" ? ` (${attributes.color})` : "";
+  
+  if (isNewDiscovery) {
+    showNotification(`🆕 NEW DISCOVERY! ${eggName}!${specialText}${colorText} (+${scoreValues[idx]} pts)`);
+  } else {
+    showNotification(`✨ ${eggName} Acquired!${specialText}${colorText} (+${scoreValues[idx]} pts)`);
+  }
+  
+  updateUI();
+  saveGameState(); // Auto-save on gacha
+}
+
+/* === Gallery Toggle === */
+function toggleGallery() {
+  const box = document.getElementById("eggBox");
+  const isOpen = box.style.display !== "none";
+  
+  if (isOpen) {
+    box.style.display = "none";
+  } else {
+    box.style.display = "grid";
+    updateGalleryDisplay();
+  }
+  
+  const toggleBtn = document.getElementById("galleryToggle");
+  toggleBtn.textContent = isOpen ? "📂 View Collection" : "📁 Hide Collection";
+}
+
+function updateGalleryDisplay() {
+  const eggBox = document.getElementById("eggBox");
+  eggBox.innerHTML = "";
+  
+  // Show only the latest 7 eggs
+  const recentEggs = eggs.slice(-7);
+  
+  recentEggs.forEach(egg => {
+    const eggElement = createEggElement(egg);
+    eggBox.appendChild(eggElement);
+  });
+  
+  // Add info text if there are more eggs
+  if (eggs.length > 7) {
+    const infoDiv = document.createElement("div");
+    infoDiv.style.cssText = `
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 10px;
+      color: #ccc;
+      font-size: 0.8rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      margin-top: 10px;
+    `;
+    infoDiv.textContent = `Showing latest 7 of ${eggs.length} eggs. Check Codex for full collection.`;
+    eggBox.appendChild(infoDiv);
+  }
+}
+
+function toggleCodex() {
+  const modal = document.getElementById("codexModal");
+  const isOpen = modal.style.display !== "none";
+  
+  if (isOpen) {
+    // Smooth close animation
+    modal.style.opacity = "0";
+    modal.style.transform = "scale(0.8) translateY(-30px)";
+    setTimeout(() => {
+      modal.style.display = "none";
+      modal.style.opacity = "";
+      modal.style.transform = "";
+    }, 200);
+  } else {
+    modal.style.display = "flex";
+    // Defer heavy DOM operations using requestIdleCallback or requestAnimationFrame
+    if (window.requestIdleCallback) {
+      requestIdleCallback(() => updateCodex(), { timeout: 100 });
+    } else {
+      setTimeout(() => updateCodex(), 0);
+    }
+  }
+  
+  const toggleBtn = document.getElementById("dexToggle");
+  toggleBtn.textContent = isOpen ? "📖 Egg Codex" : "📕 Hide Codex";
+}
+
+function updateCodex() {
+  const codexContent = document.getElementById("codexContent");
+  if (!codexContent) return;
+  
+  // Calculate egg quantities for each type
+  const eggQuantities = {};
+  eggs.forEach(egg => {
+    const eggKey = `${rarities[egg.rarity]}-${egg.name}`;
+    eggQuantities[eggKey] = (eggQuantities[eggKey] || 0) + 1;
+  });
+  
+  // Use DocumentFragment for better performance
+  const fragment = document.createDocumentFragment();
+  
+  rarities.forEach((rarity, rarityIdx) => {
+    const section = document.createElement("div");
+    section.className = "rarity-section";
+    
+    const header = document.createElement("div");
+    header.className = `rarity-header rarity-${rarity}`;
+    header.style.cssText = `color: ${rarityColors[rarityIdx]}; border-color: ${rarityColors[rarityIdx]};`;
+    
+    const eggTypesForRarity = eggTypes[rarity];
+    const discoveredInRarity = eggTypesForRarity.filter(eggName => 
+      discoveredEggs.has(`${rarity}-${eggName}`)
+    ).length;
+    
+    header.innerHTML = `${rarity} <span class="rarity-progress">(${discoveredInRarity}/${eggTypesForRarity.length})</span>`;
+    
+    const grid = document.createElement("div");
+    grid.className = "codex-grid";
+    
+    // Batch create all items for this rarity
+    const gridFragment = document.createDocumentFragment();
+    
+    eggTypesForRarity.forEach(eggName => {
+      const eggKey = `${rarity}-${eggName}`;
+      const isDiscovered = discoveredEggs.has(eggKey);
+      const quantity = eggQuantities[eggKey] || 0;
+      
+      const item = document.createElement("div");
+      item.className = `codex-item ${isDiscovered ? 'discovered' : 'undiscovered'}`;
+      
+      const img = document.createElement("img");
+      img.className = "codex-egg-img";
+      img.loading = "lazy";
+      img.decoding = "async";
+      
+      if (isDiscovered) {
+        img.src = eggImgs[rarityIdx];
+        img.onerror = function() {
+          const colors = ['999999', '4CAF50', '2196F3', '9C27B0', 'FF9800', 'F44336', 'E91E63', '673AB7'];
+          this.src = `https://dummyimage.com/100x75/${colors[rarityIdx]}/fff&text=${encodeURIComponent(eggName.split(' ')[0])}`;
+        };
+      } else {
+        // Silhouette for undiscovered eggs
+        img.src = `https://dummyimage.com/100x75/333333/666&text=???`;
+      }
+      
+      const info = document.createElement("div");
+      info.className = `codex-egg-info rarity-${rarity}`;
+      
+      // Shorten egg names for better display
+      const shortName = isDiscovered ? eggName.replace(' Egg', '') : '???';
+      info.innerHTML = `<div style="font-size: 0.65rem;">${shortName}</div><div style="font-size: 0.5rem;">${rarity}</div>`;
+      
+      if (isDiscovered) {
+        const badge = document.createElement("div");
+        badge.className = "discovery-badge";
+        badge.textContent = "✓";
+        item.appendChild(badge);
+        
+        // Add quantity badge for all discovered eggs
+        if (quantity > 0) {
+          const quantityBadge = document.createElement("div");
+          quantityBadge.className = "quantity-badge";
+          quantityBadge.textContent = quantity > 999 ? "999+" : quantity.toString();
+          item.appendChild(quantityBadge);
+        }
+      }
+      
+      item.appendChild(img);
+      item.appendChild(info);
+      gridFragment.appendChild(item);
+    });
+    
+    grid.appendChild(gridFragment);
+    section.appendChild(header);
+    section.appendChild(grid);
+    fragment.appendChild(section);
+  });
+  
+  // Single DOM update instead of multiple
+  requestAnimationFrame(() => {
+    codexContent.innerHTML = "";
+    codexContent.appendChild(fragment);
+  });
+}
+
+// Close modal when clicking outside
+document.getElementById("codexModal").onclick = function(event) {
+  if (event.target === this) {
+    toggleCodex();
+  }
+}
+
+document.getElementById("exchangeModal").onclick = function(event) {
+  if (event.target === this) {
+    toggleExchange();
+  }
+}
+
+/* === Exchange System Functions === */
+function toggleExchange() {
+  const modal = document.getElementById("exchangeModal");
+  const isOpen = modal.style.display !== "none";
+  
+  if (isOpen) {
+    // Smooth close animation
+    modal.style.opacity = "0";
+    modal.style.transform = "scale(0.8) translateY(-30px)";
+    setTimeout(() => {
+      modal.style.display = "none";
+      modal.style.opacity = "";
+      modal.style.transform = "";
+    }, 200);
+  } else {
+    modal.style.display = "flex";
+    updateExchangeDisplay();
+  }
+  
+  const toggleBtn = document.getElementById("exchangeToggle");
+  toggleBtn.textContent = isOpen ? "🔄 Exchange Eggs" : "🔄 Hide Exchange";
+}
+
+function updateExchangeDisplay() {
+  const exchangeContent = document.getElementById("exchangeContent");
+  if (!exchangeContent) return;
+  
+  // Calculate egg quantities for each type
+  const eggQuantities = {};
+  eggs.forEach(egg => {
+    const eggKey = `${rarities[egg.rarity]}-${egg.name}`;
+    eggQuantities[eggKey] = (eggQuantities[eggKey] || 0) + 1;
+  });
+  
+  const fragment = document.createDocumentFragment();
+  
+  rarities.forEach((rarity, rarityIdx) => {
+    const eggTypesForRarity = eggTypes[rarity];
+    const hasEggs = eggTypesForRarity.some(eggName => {
+      const eggKey = `${rarity}-${eggName}`;
+      return (eggQuantities[eggKey] || 0) > 0;
+    });
+    
+    if (!hasEggs) return; // Skip rarities with no eggs
+    
+    const section = document.createElement("div");
+    section.className = "rarity-section";
+    
+    const header = document.createElement("div");
+    header.className = `rarity-header rarity-${rarity}`;
+    header.style.cssText = `color: ${rarityColors[rarityIdx]}; border-color: ${rarityColors[rarityIdx]};`;
+    
+    const rate = exchangeRates[rarity];
+    let rateText;
+    if (rate >= 1) {
+      rateText = `${rate} eggs = 1 ticket`;
+    } else {
+      rateText = `1 egg = ${Math.round(1/rate)} tickets`;
+    }
+    
+    header.innerHTML = `${rarity} <span style="font-size: 0.8rem;">(${rateText})</span>`;
+    
+    const grid = document.createElement("div");
+    grid.style.cssText = `
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 10px;
+      margin-top: 10px;
+    `;
+    
+    eggTypesForRarity.forEach(eggName => {
+      const eggKey = `${rarity}-${eggName}`;
+      const quantity = eggQuantities[eggKey] || 0;
+      
+      if (quantity === 0) return; // Skip eggs with no quantity
+      
+      const exchangeItem = document.createElement("div");
+      exchangeItem.style.cssText = `
+        background: rgba(0, 0, 0, 0.5);
+        border: 1px solid ${rarityColors[rarityIdx]};
+        border-radius: 10px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      `;
+      
+      const eggInfo = document.createElement("div");
+      eggInfo.innerHTML = `
+        <div style="font-size: 0.9rem; color: ${rarityColors[rarityIdx]};">${eggName}</div>
+        <div style="font-size: 0.8rem; color: #ccc;">You have: ${quantity} ${quantity > 1 ? '(Keep 1)' : '(Need more to exchange)'}</div>
+      `;
+      
+      const exchangeBtn = document.createElement("button");
+      exchangeBtn.style.cssText = `
+        background: linear-gradient(45deg, #ff9800, #f57c00);
+        color: white;
+        border: none;
+        border-radius: 8px;
+        padding: 8px 12px;
+        font-size: 0.8rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.3s ease;
+      `;
+      
+      const canExchange = rate >= 1 ? quantity > rate : quantity > 1; // Always keep at least 1
+      if (canExchange) {
+        if (rate >= 1) {
+          exchangeBtn.textContent = `Exchange ${rate}`;
+          exchangeBtn.onclick = () => exchangeEggs(eggKey, rate);
+        } else {
+          exchangeBtn.textContent = `Exchange 1`;
+          exchangeBtn.onclick = () => exchangeEggs(eggKey, 1);
+        }
+      } else {
+        if (rate >= 1) {
+          exchangeBtn.textContent = quantity === 0 ? `Need ${rate}` : `Need ${rate + 1} total (keep 1)`;
+        } else {
+          exchangeBtn.textContent = quantity === 0 ? "Need 1" : "Need 2 total (keep 1)";
+        }
+        exchangeBtn.disabled = true;
+        exchangeBtn.style.background = "#555";
+        exchangeBtn.style.cursor = "not-allowed";
+      }
+      
+      exchangeItem.appendChild(eggInfo);
+      exchangeItem.appendChild(exchangeBtn);
+      grid.appendChild(exchangeItem);
+    });
+    
+    if (grid.children.length > 0) {
+      section.appendChild(header);
+      section.appendChild(grid);
+      fragment.appendChild(section);
+    }
+  });
+  
+  if (fragment.children.length === 0) {
+    const noEggsDiv = document.createElement("div");
+    noEggsDiv.style.cssText = `
+      text-align: center;
+      padding: 40px;
+      color: #ccc;
+      font-size: 1.2rem;
+    `;
+    noEggsDiv.textContent = "No eggs available for exchange. Start hunting!";
+    fragment.appendChild(noEggsDiv);
+  }
+  
+  requestAnimationFrame(() => {
+    exchangeContent.innerHTML = "";
+    exchangeContent.appendChild(fragment);
+  });
+}
+
+function exchangeEggs(eggKey, eggCost) {
+  const [rarity, eggName] = eggKey.split('-');
+  const rate = exchangeRates[rarity];
+  
+  // Count how many of this specific egg we have
+  let eggCount = 0;
+  eggs.forEach(egg => {
+    if (rarities[egg.rarity] === rarity && egg.name === eggName) {
+      eggCount++;
+    }
+  });
+  
+  // Check if we have enough eggs AND can keep at least 1
+  const requiredTotal = eggCost + 1; // Need cost + 1 to keep
+  if (eggCount < requiredTotal) {
+    showNotification(`❌ Need ${requiredTotal} ${eggName} to exchange ${eggCost} (keeping 1)! You have ${eggCount}`);
+    return;
+  }
+  
+  // Remove eggs (but keep 1)
+  let removed = 0;
+  for (let i = eggs.length - 1; i >= 0 && removed < eggCost; i--) {
+    if (rarities[eggs[i].rarity] === rarity && eggs[i].name === eggName) {
+      eggs.splice(i, 1);
+      removed++;
+    }
+  }
+  
+  // Add tickets
+  const ticketsEarned = rate >= 1 ? 1 : Math.round(1 / rate);
+  tickets += ticketsEarned;
+  
+  // Update displays
+  updateUI();
+  updateExchangeDisplay();
+  if (document.getElementById("eggBox").style.display !== "none") {
+    updateGalleryDisplay();
+  }
+  
+  showNotification(`✅ Exchanged ${eggCost} ${eggName} for ${ticketsEarned} ticket${ticketsEarned > 1 ? 's' : ''}! (Kept 1 in collection)`);
+  saveGameState();
+}
+
+document.getElementById("galleryToggle").onclick = toggleGallery;
+document.getElementById("dexToggle").onclick = toggleCodex;
+document.getElementById("exchangeToggle").onclick = toggleExchange;
+document.getElementById("gachaBtn").onclick = spinGacha;
+document.getElementById("autoClickBtn").onclick = toggleAutoClick;
+
+/* === Notification System === */
+let notificationCount = 0;
+function showNotification(message) {
+  // Max 3 notifications
+  if (document.querySelectorAll('.notification').length >= 3) return;
+  
+  notificationCount++;
+  const notification = document.createElement("div");
+  notification.className = "notification";
+  notification.textContent = message;
+  notification.style.cssText = `
+    position: fixed;
+    top: ${20 + (notificationCount * 80)}px;
+    right: 20px;
+    background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 60, 0.9));
+    border: 2px solid #00ff88;
+    color: #00ff88;
+    padding: 15px 25px;
+    border-radius: 12px;
+    z-index: 1000;
+    font-size: 0.9rem;
+    font-weight: 700;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 8px 25px rgba(0, 255, 136, 0.3);
+    max-width: 350px;
+    word-wrap: break-word;
+    font-family: 'Orbitron', monospace;
+    animation: slideIn 0.3s ease-out;
+  `;
+  
+  document.body.appendChild(notification);
+  
+  setTimeout(() => {
+    if (notification.parentNode) {
+      notification.style.animation = "slideOut 0.3s ease-in";
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.remove();
+          notificationCount = Math.max(0, notificationCount - 1);
+        }
+      }, 300);
+    }
+  }, 2500);
+}
+
+/* === Keyboard Controls === */
+window.onkeydown = (e) => {
+  if (e.code === "Space" || e.code === "Enter") {
+    e.preventDefault();
+    document.getElementById("clickBtn").click();
+  }
+  if (e.key === "g" || e.key === "G") {
+    e.preventDefault();
+    spinGacha();
+  }
+  if (e.key === "t" || e.key === "T") {
+    e.preventDefault();
+    toggleGallery();
+  }
+  if (e.key === "d" || e.key === "D") {
+    e.preventDefault();
+    toggleCodex();
+  }
+  if (e.key === "e" || e.key === "E") {
+    e.preventDefault();
+    toggleExchange();
+  }
+  if (e.key === "a" || e.key === "A") {
+    e.preventDefault();
+    if (autoClickUnlocked) toggleAutoClick();
+  }
+  if (e.key === "s" || e.key === "S") {
+    e.preventDefault();
+    forceSave();
+  }
+  if (e.key === "l" || e.key === "L") {
+    e.preventDefault();
+    checkSaveData();
+  }
+  if (e.key === "j" || e.key === "J") {
+    e.preventDefault();
+    downloadSaveFile();
+  }
+  if (e.key === "k" || e.key === "K") {
+    e.preventDefault();
+    uploadSaveFile();
+  }
+};
+
+/* === Initialize Game === */
+// Load saved game state
+const gameLoaded = loadGameState();
+
+// Restore gallery if eggs exist and gallery is open
+if (eggs.length > 0) {
+  const eggBox = document.getElementById("eggBox");
+  if (eggBox.style.display !== "none") {
+    updateGalleryDisplay();
+  }
+}
+
+// Show auto-click button if unlocked
+if (autoClickUnlocked) {
+  document.getElementById("autoClickBtn").style.display = "inline-block";
+}
+
+updateUI();
+
+if (gameLoaded) {
+  showNotification("🎮 Game loaded successfully!");
+}
+
+// Save on page unload
+window.addEventListener('beforeunload', saveGameState);
+</script>
+
+<!-- Debug System (Hidden) -->
+<script src="js/debug.js"></script>
+</body>
+</html>

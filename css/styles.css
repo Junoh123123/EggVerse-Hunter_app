@@ -56,6 +56,8 @@ body::before {
   align-items: center;
   z-index: 2000;
   animation: modalFadeIn 0.3s ease-out;
+  /* PWA 환경에서 중앙정렬 보장 */
+  touch-action: manipulation;
 }
 
 .gacha-detail-content {
@@ -71,6 +73,9 @@ body::before {
   animation: modalSlideIn 0.4s ease-out;
   max-height: 90vh;
   overflow-y: auto;
+  /* PWA에서 중앙정렬 보장 */
+  margin: auto;
+  transform: translate3d(0,0,0);
 }
 
 .gacha-detail-header {
@@ -829,6 +834,8 @@ h1 {
   user-select: none;
   -webkit-user-select: none;
   -webkit-touch-callout: none;
+  /* PWA 환경에서 강제 중앙정렬 */
+  margin: auto;
 }
 
 @keyframes modalSlideIn {
@@ -1178,6 +1185,10 @@ h1 {
     -webkit-overflow-scrolling: none;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    /* PWA 환경에서 중앙정렬 */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
   
   /* 배경 애니메이션도 모바일에서 유지 */
@@ -1197,16 +1208,20 @@ h1 {
   }
   
   .container {
-    height: 100vh;
-    max-height: 100vh;
-    overflow: hidden;
-    padding: 10px;
+    height: auto;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding: 0;
     display: flex;
     flex-direction: column;
-    justify-content: flex-start;
+    justify-content: center;
     align-items: center;
     gap: 8px;
-    padding-top: 15px;
+    /* 가로 10% 마진 */
+    width: 90%;
+    max-width: 90%;
+    margin: 0 auto;
+    position: relative;
   }
   
   h1 { 
@@ -1453,246 +1468,293 @@ h1 {
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 25%, #16213e 50%, #0f3460 75%, #1a1a2e 100%) !important;
   }
   
+  body {
+    /* PWA 환경에서 완전한 중앙정렬 */
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    min-height: 100vh !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+  
   .container {
-    padding: 8px;
-    justify-content: flex-start;
-    align-items: center;
-    gap: 6px;
-    padding-top: 20px;
+    /* 가로 15% 마진 (좌우 각 7.5%) */
+    width: 85% !important;
+    max-width: 85% !important;
+    height: auto !important;
+    max-height: 85vh !important;
+    padding: 0 !important;
+    margin: 0 auto !important;
+    justify-content: center !important;
+    align-items: center !important;
+    gap: 4px !important;
+    overflow-y: auto !important;
+    position: relative !important;
   }
   
   h1 {
-    font-size: 1.3rem;
-    margin-bottom: 8px;
+    font-size: 1.1rem;
+    margin-bottom: 6px;
     margin-top: 0;
     flex-shrink: 0;
+    text-align: center;
   }
   
   #stats {
-    padding: 8px;
-    margin: 0 auto;
+    padding: 6px;
+    margin: 0 auto 4px auto;
     flex-shrink: 0;
     width: 100%;
-    max-width: 320px;
+    max-width: 100%;
+    min-width: unset;
   }
   
   .stat-grid {
-    gap: 6px;
-    font-size: 0.65rem;
+    gap: 4px;
+    font-size: 0.55rem;
   }
   
   .stat-item {
-    padding: 6px;
-    min-height: 38px;
+    padding: 4px;
+    min-height: 32px;
   }
   
   .stat-item.level-highlight {
-    padding: 8px;
+    padding: 6px;
     border: 2px solid #FFD700;
   }
   
   .level-value {
-    font-size: 1.2rem !important;
+    font-size: 1rem !important;
   }
   
   .stat-value {
-    font-size: 0.75rem;
+    font-size: 0.65rem;
   }
   
   /* EXP와 Ticket 바 더 작게 */
   .exp-container, .ticket-container {
-    margin-top: 6px;
-    padding: 6px;
+    margin-top: 4px;
+    padding: 4px;
   }
   
   .exp-label, .ticket-label {
-    font-size: 0.7rem;
-    margin-bottom: 4px;
+    font-size: 0.6rem;
+    margin-bottom: 3px;
   }
   
   .exp-bar, .ticket-bar {
-    height: 14px;
+    height: 12px;
   }
   
   .exp-text, .ticket-text {
-    font-size: 0.65rem;
+    font-size: 0.55rem;
   }
   
   .combo-container {
-    min-height: 40px;
-    margin: 6px auto;
-    max-width: 320px;
+    min-height: 32px;
+    margin: 4px auto;
+    max-width: 100%;
     flex-shrink: 0;
   }
   
   #comboDisplay {
-    padding: 6px 12px;
+    padding: 4px 8px;
   }
   
   .combo-count {
-    font-size: 0.85rem;
-  }
-  
-  .combo-bonus {
     font-size: 0.7rem;
   }
   
-  #rarityBar {
-    padding: 6px;
-    margin: 6px auto;
+  .combo-bonus {
     font-size: 0.6rem;
-    max-width: 320px;
+  }
+  
+  #rarityBar {
+    padding: 4px;
+    margin: 4px auto;
+    font-size: 0.5rem;
+    max-width: 100%;
     flex-shrink: 0;
   }
   
   .controls {
     padding: 0;
-    gap: 8px;
-    margin: 8px 0;
+    gap: 6px;
+    margin: 6px 0;
     width: 100%;
-    max-width: 320px;
+    max-width: 100%;
     flex-shrink: 0;
   }
   
   #clickBtn {
-    padding: 14px 18px;
-    font-size: 1rem;
+    padding: 10px 14px;
+    font-size: 0.85rem;
     margin: 0;
-    min-height: 50px;
-    /* 기본 상태를 큰 버튼으로 설정하되 클릭 효과는 유지 */
+    min-height: 40px;
     transform: scale(1) translate3d(0,0,0);
   }
   
   #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
-    padding: 8px 12px;
-    font-size: 0.65rem;
+    padding: 6px 8px;
+    font-size: 0.55rem;
   }
   
   #eggBox {
-    max-height: 22vh;
-    padding: 6px;
+    max-height: 18vh;
+    padding: 4px;
     margin-top: 0;
     flex-grow: 0;
     flex-shrink: 1;
-    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
-    gap: 4px;
+    grid-template-columns: repeat(auto-fill, minmax(55px, 1fr));
+    gap: 3px;
   }
   
-  /* iPhone 16 Pro Max Gacha 모달 최적화 */
+  /* iPhone 16 Pro Max PWA Gacha 모달 최적화 */
   .gacha-detail-content {
-    padding: 15px;
-    max-width: 98%;
-    max-height: 80vh;
-    width: 98%;
+    padding: 8px;
+    max-width: 90%;
+    max-height: 75vh;
+    width: 90%;
+    margin: auto;
   }
   
   .gacha-detail-header {
-    font-size: 1.2rem;
-    margin-bottom: 10px;
+    font-size: 1rem;
+    margin-bottom: 6px;
   }
   
   .gacha-detail-egg {
-    width: 120px;
-    height: 120px;
-    margin: 10px auto;
+    width: 80px;
+    height: 80px;
+    margin: 6px auto;
   }
   
   .gacha-detail-egg img {
-    width: 100px;
-    height: 100px;
+    width: 65px;
+    height: 65px;
   }
   
   .gacha-detail-name {
-    font-size: 1.3rem;
-    margin: 6px 0;
+    font-size: 1rem;
+    margin: 4px 0;
   }
   
   .gacha-detail-rarity {
-    font-size: 0.9rem;
-    padding: 4px 8px;
+    font-size: 0.7rem;
+    padding: 2px 6px;
   }
   
   .gacha-detail-description {
-    font-size: 0.8rem;
-    padding: 10px;
-    margin: 10px 0;
+    font-size: 0.65rem;
+    padding: 6px;
+    margin: 6px 0;
   }
   
-  /* iPhone 16 Pro Max Codex 최적화 */
+  .gacha-detail-stats {
+    gap: 6px;
+    margin: 8px 0;
+  }
+  
+  .gacha-detail-stat {
+    padding: 4px;
+    font-size: 0.6rem;
+  }
+  
+  .gacha-continue-btn {
+    padding: 6px 12px;
+    font-size: 0.7rem;
+    margin-top: 8px;
+  }
+  
+  /* iPhone 16 Pro Max PWA Codex 최적화 */
   .modal-content {
-    width: 98%;
-    max-height: 85vh;
-    padding: 10px;
+    width: 90%;
+    max-height: 80vh;
+    padding: 6px;
+    margin: auto;
+    /* PWA에서 중앙정렬 보장 */
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
   }
   
   .modal-header h3 {
-    font-size: 0.9rem;
+    font-size: 0.75rem;
+  }
+  
+  .close-btn {
+    font-size: 1.5rem;
+    width: 30px;
+    height: 30px;
   }
   
   .codex-scroll {
-    max-height: 65vh;
+    max-height: 60vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
   }
   
   .codex-grid {
-    grid-template-columns: repeat(auto-fill, minmax(45px, 1fr));
-    gap: 2px;
+    grid-template-columns: repeat(auto-fill, minmax(35px, 1fr));
+    gap: 1px;
   }
   
   .codex-item {
-    height: 55px;
+    height: 45px;
   }
   
   .codex-egg-img {
-    height: 35px;
+    height: 28px;
   }
   
   .codex-egg-info {
-    font-size: 0.35rem;
-    padding: 2px;
+    font-size: 0.3rem;
+    padding: 1px;
   }
   
   #codexProgress {
-    font-size: 0.7rem;
-    padding: 4px;
-    margin-bottom: 8px;
-  }
-  
-  .rarity-header {
-    font-size: 0.75rem;
-    padding: 4px;
+    font-size: 0.6rem;
+    padding: 3px;
     margin-bottom: 6px;
   }
   
-  /* iPhone 16 Pro Max Rules 최적화 */
+  .rarity-header {
+    font-size: 0.65rem;
+    padding: 3px;
+    margin-bottom: 4px;
+  }
+  
+  /* iPhone 16 Pro Max PWA Rules 최적화 */
   .rules-content {
-    font-size: 0.7rem;
-    line-height: 1.3;
-    max-height: 70vh;
+    font-size: 0.6rem;
+    line-height: 1.2;
+    max-height: 65vh;
     overflow-y: auto;
     -webkit-overflow-scrolling: touch;
-    padding-right: 8px;
+    padding-right: 6px;
   }
   
   .rules-content p {
-    margin-bottom: 4px;
-    padding: 3px;
-    font-size: 0.65rem;
+    margin-bottom: 3px;
+    padding: 2px;
+    font-size: 0.55rem;
   }
   
   .exp-table, .shortcuts {
-    margin: 6px 0;
-    padding: 4px;
+    margin: 4px 0;
+    padding: 3px;
   }
   
   .exp-table h4, .shortcuts h4 {
-    font-size: 0.7rem;
-    margin-bottom: 4px;
+    font-size: 0.6rem;
+    margin-bottom: 3px;
   }
   
   .exp-grid, .shortcut-grid {
-    font-size: 0.6rem;
+    font-size: 0.5rem;
     gap: 1px;
   }
 }
