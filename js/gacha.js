@@ -282,25 +282,31 @@ class GachaSystem {
     
     const resultBox = document.createElement('div');
     resultBox.style.cssText = `
-      width: 90%;
-      max-width: 500px;
-      height: 700px;
+      width: 85%;
+      max-width: 420px;
+      height: auto;
+      max-height: 80vh;
       background: linear-gradient(135deg, #1a1a2e, #16213e);
       border: 3px solid ${GAME_CONFIG.rarityColors[egg.rarity]};
-      border-radius: 20px;
-      padding: 30px 30px 100px 30px;
+      border-radius: 15px;
+      padding: 20px;
       color: white;
       font-family: 'Orbitron', monospace;
       position: relative;
-      overflow: hidden;
+      overflow-y: auto;
       animation: slideIn 0.5s ease;
-      margin: 0 20px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
     `;
     
     const header = document.createElement('div');
     header.style.cssText = `
       text-align: center;
-      margin-bottom: 30px;
+      margin-bottom: 15px;
+      width: 100%;
     `;
     
     // Lucky Drop 표시 추가
@@ -310,14 +316,14 @@ class GachaSystem {
       luckyBadge.style.cssText = `
         background: linear-gradient(135deg, #FFD700, #FFA500);
         color: #333;
-        padding: 8px 15px;
-        border-radius: 20px;
-        font-size: 1rem;
+        padding: 6px 12px;
+        border-radius: 15px;
+        font-size: 0.9rem;
         font-weight: bold;
-        margin-bottom: 15px;
+        margin-bottom: 10px;
         display: inline-block;
         animation: rainbow 2s infinite;
-        box-shadow: 0 4px 15px rgba(255, 215, 0, 0.5);
+        box-shadow: 0 3px 10px rgba(255, 215, 0, 0.5);
       `;
       header.appendChild(luckyBadge);
     }
@@ -327,17 +333,20 @@ class GachaSystem {
     discoveryStatus.style.cssText = `
       color: ${isNewDiscovery ? '#00ff88' : '#ffd700'};
       margin-bottom: 10px;
-      animation: ${isNewDiscovery ? 'celebration' : 'pulse'} 1s infinite;
+      font-size: 1.3rem;
+      text-align: center;
+      animation: ${isNewDiscovery ? 'gentleCelebration' : 'pulse'} 1.5s infinite;
     `;
     
     const eggImage = document.createElement('img');
     eggImage.src = egg.img;
     eggImage.style.cssText = `
-      width: 200px;
-      height: 200px;
+      width: 160px;
+      height: 160px;
       border-radius: 50%;
-      border: 5px solid ${GAME_CONFIG.rarityColors[egg.rarity]};
-      margin: 20px 0;
+      border: 4px solid ${GAME_CONFIG.rarityColors[egg.rarity]};
+      margin: 15px auto;
+      display: block;
       animation: float 2s ease-in-out infinite;
     `;
     
@@ -346,8 +355,8 @@ class GachaSystem {
     eggName.style.cssText = `
       color: ${GAME_CONFIG.rarityColors[egg.rarity]};
       text-align: center;
-      margin: 20px 0;
-      font-size: 2rem;
+      margin: 15px 0;
+      font-size: 1.6rem;
     `;
     
     const rarityBadge = document.createElement('div');
@@ -355,12 +364,13 @@ class GachaSystem {
     rarityBadge.style.cssText = `
       background: ${GAME_CONFIG.rarityColors[egg.rarity]};
       color: black;
-      padding: 10px 20px;
-      border-radius: 25px;
+      padding: 8px 16px;
+      border-radius: 20px;
       font-weight: bold;
       text-align: center;
-      margin: 20px auto;
+      margin: 15px auto;
       width: fit-content;
+      font-size: 0.9rem;
       animation: glow 2s ease-in-out infinite;
     `;
     
@@ -369,34 +379,32 @@ class GachaSystem {
     expGain.style.cssText = `
       color: #00ff88;
       text-align: center;
-      font-size: 1.5rem;
-      margin: 20px 0 100px 0;
+      font-size: 1.2rem;
+      margin: 15px 0 20px 0;
     `;
     
     const closeButton = document.createElement('button');
     closeButton.textContent = 'Continue';
     closeButton.style.cssText = `
-      position: absolute;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      padding: 15px 30px;
+      margin-top: 15px;
+      padding: 12px 24px;
       background: linear-gradient(45deg, #00ff88, #00d4ff);
       border: none;
-      border-radius: 25px;
+      border-radius: 20px;
       color: black;
       font-family: 'Orbitron', monospace;
       font-weight: bold;
       cursor: pointer;
       transition: all 0.3s ease;
+      font-size: 0.9rem;
     `;
     
     closeButton.onmouseover = () => {
-      closeButton.style.transform = 'translateX(-50%) scale(1.1)';
+      closeButton.style.transform = 'scale(1.05)';
     };
     
     closeButton.onmouseout = () => {
-      closeButton.style.transform = 'translateX(-50%) scale(1)';
+      closeButton.style.transform = 'scale(1)';
     };
     
     closeButton.onclick = () => {

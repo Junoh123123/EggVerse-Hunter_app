@@ -1465,6 +1465,11 @@ h1 {
     padding: 10px;
     margin: 10px 0;
   }
+  
+  /* iPhone 16 Pro Max용 가챠 결과 모달 추가 최적화 */
+  .gacha-result-modal {
+    padding: 10px !important;
+  }
 }
 
 /* 가로 모드 최적화 */
@@ -1531,6 +1536,12 @@ h1 {
   0%, 100% { transform: scale(1) rotate(0deg); }
   25% { transform: scale(1.1) rotate(-5deg); }
   75% { transform: scale(1.1) rotate(5deg); }
+}
+
+@keyframes gentleCelebration {
+  0%, 100% { transform: scale(1) rotate(0deg); }
+  25% { transform: scale(1.05) rotate(-2deg); }
+  75% { transform: scale(1.05) rotate(2deg); }
 }
 
 @keyframes glow {
