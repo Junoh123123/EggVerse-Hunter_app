@@ -10,42 +10,7 @@ class GameController {
   static setupMobileOptimizations() {
     // 모바일 스크롤 방지
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      // 터치 이벤트로 인한 스크롤 방지 (버튼과 클릭 가능한 요소 제외)
-      document.addEventListener('touchstart', function(e) {
-        // 클릭 가능한 요소들은 허용
-        if (e.target.tagName !== 'BUTTON' && 
-            !e.target.closest('button') &&
-            !e.target.closest('.close-btn') &&
-            !e.target.closest('.modal-header') &&
-            e.target.tagName !== 'INPUT' && 
-            e.target.tagName !== 'SELECT') {
-          // 배경 영역에서만 스크롤 방지
-          if (e.target.classList.contains('container') || 
-              e.target === document.body ||
-              e.target === document.documentElement) {
-            e.preventDefault();
-          }
-        }
-      }, { passive: false });
-      
-      document.addEventListener('touchmove', function(e) {
-        // 스크롤이 필요한 영역은 허용
-        if (!e.target.closest('.modal-content') && 
-            !e.target.closest('#eggBox') && 
-            !e.target.closest('.codex-scroll') &&
-            !e.target.closest('.rules-content')) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      // iOS Safari 바운스 효과 방지 (특정 영역에서만)
-      document.addEventListener('touchforcechange', function(e) {
-        if (!e.target.closest('.modal-content') && !e.target.closest('button')) {
-          e.preventDefault();
-        }
-      }, { passive: false });
-      
-      // 더블탭 줌 방지
+      // 더블탭 줌 방지만 처리 (터치 이벤트는 최소한으로)
       let lastTouchEnd = 0;
       document.addEventListener('touchend', function(e) {
         const now = (new Date()).getTime();
@@ -54,13 +19,51 @@ class GameController {
         }
         lastTouchEnd = now;
       }, false);
+      
+      // 배경에서만 스크롤 방지
+      document.addEventListener('touchmove', function(e) {
+        // 스크롤이 필요한 영역은 허용
+        if (!e.target.closest('.modal-content') && 
+            !e.target.closest('#eggBox') && 
+            !e.target.closest('.codex-scroll') &&
+            !e.target.closest('.rules-content') &&
+            !e.target.closest('button') &&
+            !e.target.closest('.controls')) {
+          if (e.target === document.body || 
+              e.target === document.documentElement ||
+              e.target.classList.contains('container')) {
+            e.preventDefault();
+          }
+        }
+      }, { passive: false });
     }
   }
 
   static setupEventListeners() {
-    // Click button
+    // Click button - 모바일 터치와 마우스 클릭 모두 지원
     const clickBtn = document.getElementById("clickBtn");
-    if (clickBtn) clickBtn.onclick = () => this.performClick(true);
+    if (clickBtn) {
+      // 마우스 클릭
+      clickBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.performClick(true);
+      });
+      
+      // 터치 이벤트 (모바일)
+      clickBtn.addEventListener('touchstart', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        this.performClick(true);
+      }, { passive: false });
+      
+      // 키보드 접근성
+      clickBtn.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          this.performClick(true);
+        }
+      });
+    }
     
     // Gacha button
     const gachaBtn = document.getElementById("gachaBtn");
