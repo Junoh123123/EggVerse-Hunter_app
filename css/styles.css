@@ -515,8 +515,8 @@ h1 {
   overflow: hidden;
   animation: pulseGlow 2s ease-in-out infinite;
   will-change: transform;
-  /* 기본 상태를 큰 버튼으로 강제 설정 */
-  transform: scale(1) translate3d(0,0,0) !important;
+  /* 기본 상태를 큰 버튼으로 설정 */
+  transform: scale(1) translate3d(0,0,0);
 }
 
 #clickBtn::before {
@@ -1200,12 +1200,13 @@ h1 {
     height: 100vh;
     max-height: 100vh;
     overflow: hidden;
-    padding: 12px;
+    padding: 10px;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    gap: 12px;
+    gap: 8px;
+    padding-top: 15px;
   }
   
   h1 { 
@@ -1453,85 +1454,128 @@ h1 {
   }
   
   .container {
-    padding: 15px;
-    justify-content: center;
+    padding: 8px;
+    justify-content: flex-start;
     align-items: center;
-    gap: 15px;
+    gap: 6px;
+    padding-top: 20px;
   }
   
   h1 {
-    font-size: 1.6rem;
-    margin-bottom: 15px;
+    font-size: 1.3rem;
+    margin-bottom: 8px;
     margin-top: 0;
     flex-shrink: 0;
   }
   
   #stats {
-    padding: 12px;
+    padding: 8px;
     margin: 0 auto;
     flex-shrink: 0;
     width: 100%;
-    max-width: 350px;
+    max-width: 320px;
   }
   
   .stat-grid {
-    gap: 8px;
-    font-size: 0.75rem;
+    gap: 6px;
+    font-size: 0.65rem;
   }
   
   .stat-item {
+    padding: 6px;
+    min-height: 38px;
+  }
+  
+  .stat-item.level-highlight {
     padding: 8px;
-    min-height: 45px;
+    border: 2px solid #FFD700;
+  }
+  
+  .level-value {
+    font-size: 1.2rem !important;
+  }
+  
+  .stat-value {
+    font-size: 0.75rem;
+  }
+  
+  /* EXP와 Ticket 바 더 작게 */
+  .exp-container, .ticket-container {
+    margin-top: 6px;
+    padding: 6px;
+  }
+  
+  .exp-label, .ticket-label {
+    font-size: 0.7rem;
+    margin-bottom: 4px;
+  }
+  
+  .exp-bar, .ticket-bar {
+    height: 14px;
+  }
+  
+  .exp-text, .ticket-text {
+    font-size: 0.65rem;
   }
   
   .combo-container {
-    min-height: 50px;
-    margin: 12px auto;
-    max-width: 350px;
+    min-height: 40px;
+    margin: 6px auto;
+    max-width: 320px;
     flex-shrink: 0;
   }
   
   #comboDisplay {
-    padding: 10px 18px;
+    padding: 6px 12px;
+  }
+  
+  .combo-count {
+    font-size: 0.85rem;
+  }
+  
+  .combo-bonus {
+    font-size: 0.7rem;
   }
   
   #rarityBar {
-    padding: 10px;
-    margin: 12px auto;
-    font-size: 0.7rem;
-    max-width: 350px;
+    padding: 6px;
+    margin: 6px auto;
+    font-size: 0.6rem;
+    max-width: 320px;
     flex-shrink: 0;
   }
   
   .controls {
     padding: 0;
-    gap: 12px;
-    margin: 15px 0;
+    gap: 8px;
+    margin: 8px 0;
     width: 100%;
-    max-width: 350px;
+    max-width: 320px;
     flex-shrink: 0;
   }
   
   #clickBtn {
-    padding: 20px 24px;
-    font-size: 1.2rem;
+    padding: 14px 18px;
+    font-size: 1rem;
     margin: 0;
-    min-height: 65px;
-    /* 기본 상태를 큰 버튼으로 강제 설정 */
-    transform: scale(1) translate3d(0,0,0) !important;
+    min-height: 50px;
+    /* 기본 상태를 큰 버튼으로 설정하되 클릭 효과는 유지 */
+    transform: scale(1) translate3d(0,0,0);
   }
   
   #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
-    padding: 12px 16px;
-    font-size: 0.8rem;
+    padding: 8px 12px;
+    font-size: 0.65rem;
   }
   
   #eggBox {
-    max-height: 20vh;
-    padding: 10px;
+    max-height: 22vh;
+    padding: 6px;
     margin-top: 0;
     flex-grow: 0;
     flex-shrink: 1;
+    grid-template-columns: repeat(auto-fill, minmax(70px, 1fr));
+    gap: 4px;
   }
   
   /* iPhone 16 Pro Max Gacha 모달 최적화 */

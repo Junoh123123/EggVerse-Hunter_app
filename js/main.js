@@ -63,23 +63,29 @@ class GameController {
       }, false);
     }
     
-    // Hunt Eggs 버튼을 항상 기본 큰 상태로 유지
+    // Hunt Eggs 버튼을 항상 기본 큰 상태로 유지 (클릭 시만 제외)
     const clickBtn = document.getElementById("clickBtn");
     if (clickBtn) {
-      // 기본 스타일을 큰 상태로 강제 설정
+      // 기본 스타일을 큰 상태로 설정하되 클릭 효과는 방해하지 않음
       const ensureLargeButton = () => {
-        clickBtn.style.transform = "scale(1) translate3d(0,0,0)";
-        clickBtn.style.transition = "transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.3s ease";
+        // 현재 클릭 중이 아닐 때만 큰 상태로 설정
+        if (!clickBtn.style.transform.includes("0.95")) {
+          clickBtn.style.transform = "scale(1) translate3d(0,0,0)";
+        }
       };
       
       // 페이지 로드시 즉시 적용
       ensureLargeButton();
       
-      // DOM이 변경될 때마다 확인
-      setTimeout(ensureLargeButton, 100);
+      // DOM이 변경될 때마다 확인 (하지만 클릭 효과는 방해하지 않음)
+      setTimeout(ensureLargeButton, 500);
       
-      // 주기적으로 확인해서 버튼이 작아지지 않도록 보장
-      setInterval(ensureLargeButton, 1000);
+      // 주기적으로 확인해서 버튼이 작아지지 않도록 보장 (클릭 중이 아닐 때만)
+      setInterval(() => {
+        if (!clickBtn.style.transform.includes("0.95")) {
+          ensureLargeButton();
+        }
+      }, 2000);
     }
   }
 
@@ -163,9 +169,19 @@ class GameController {
     
     gameState.checkLevelUp();
     
-    // Enhanced click animation with combo-based effects
+    // Enhanced click animation with combo-based effects and button shrink
     if (showAnimation) {
       const btn = document.getElementById("clickBtn");
+      
+      // 버튼 클릭 시 즉시 shrink 효과 적용
+      btn.style.transform = "scale(0.95) translate3d(0,0,0)";
+      btn.style.transition = "transform 0.1s ease";
+      
+      // 짧은 시간 후 원래 크기로 복원
+      setTimeout(() => {
+        btn.style.transform = "scale(1) translate3d(0,0,0)";
+        btn.style.transition = "transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s cubic-bezier(0.4, 0, 0.2, 1), background-position 0.3s ease";
+      }, 100);
       
       // 기존 애니메이션 클래스 제거
       btn.classList.remove("combo-hit", "combo-burst", "combo-epic");
