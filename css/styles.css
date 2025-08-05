@@ -515,8 +515,6 @@ h1 {
   overflow: hidden;
   animation: pulseGlow 2s ease-in-out infinite;
   will-change: transform;
-  transform: translate3d(0,0,0) scale(1) !important;
-  min-height: 60px;
 }
 
 #clickBtn::before {
@@ -1283,8 +1281,6 @@ h1 {
     margin: 0 8px;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
-    transform: translate3d(0,0,0) scale(1) !important;
-    min-height: 50px;
   }
   
   #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
