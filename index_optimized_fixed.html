@@ -2,49 +2,53 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
   <title>🥚 EggVerse Hunter - NFT Gacha Game</title>
   <link rel="stylesheet" href="css/styles.css">
 </head>
 <body>
   <div class="container">
-    <!-- Header -->
-    <h1>🥚 EggVerse Hunter</h1>
-    
-    <!-- Stats Panel -->
-    <div id="stats">
-      <div class="stat-grid">
-        <div class="stat-item level-highlight">
-          <span>⭐ Level</span>
-          <span id="level" class="stat-value level-value">1</span>
-        </div>
-        <div class="stat-item">
-          <span>👆 Total Clicks</span>
-          <span id="totalClicks" class="stat-value">0</span>
-        </div>
-      </div>
+    <div class="left-panel">
+      <!-- Header -->
+      <h1>🥚 EggVerse Hunter</h1>
       
-      <!-- EXP Progress Bar -->
-      <div class="exp-container">
-        <div class="exp-label">✨ EXP Progress</div>
-        <div class="exp-bar">
-          <div class="exp-fill" id="expBar"></div>
-          <span class="exp-text" id="expText">0 / 100</span>
+      <!-- Stats Panel -->
+      <div id="stats">
+        <div class="stat-grid">
+          <div class="stat-item level-highlight">
+            <span>⭐ Level</span>
+            <span id="level" class="stat-value level-value">1</span>
+          </div>
+          <div class="stat-item">
+            <span>👆 Total Clicks</span>
+            <span id="totalClicks" class="stat-value">0</span>
+          </div>
+        </div>
+        
+        <!-- EXP Progress Bar -->
+        <div class="exp-container">
+          <div class="exp-label">✨ EXP Progress</div>
+          <div class="exp-bar">
+            <div class="exp-fill" id="expBar"></div>
+            <span class="exp-text" id="expText">0 / 100</span>
+          </div>
+        </div>
+        
+        <!-- Ticket Progress Bar -->
+        <div class="ticket-container">
+          <div class="ticket-label">🎫 Next Ticket</div>
+          <div class="ticket-bar">
+            <div class="ticket-fill" id="ticketBar"></div>
+            <span class="ticket-text" id="ticketText">1000 clicks remaining</span>
+          </div>
         </div>
       </div>
-      
-      <!-- Ticket Progress Bar -->
-      <div class="ticket-container">
-        <div class="ticket-label">🎫 Next Ticket</div>
-        <div class="ticket-bar">
-          <div class="ticket-fill" id="ticketBar"></div>
-          <span class="ticket-text" id="ticketText">1000 clicks remaining</span>
-        </div>
-      </div>
-    </div>
 
-    <!-- Combo Display (Fixed Space) -->
-    <div class="combo-container">
+      <!-- Combo Display (Fixed Space) -->
+      <div class="combo-container">
       <div id="comboDisplay" style="visibility:hidden;">
         <div class="combo-info">
           <span class="combo-count">🔥 0x COMBO</span>
@@ -120,11 +124,13 @@
       </div>
     </div>
 
-    <!-- Gacha Animation Container -->
-    <div class="gacha-animation-container"></div>
+    <div class="right-panel">
+      <!-- Gacha Animation Container -->
+      <div class="gacha-animation-container"></div>
 
-    <!-- Egg Collection -->
-    <div id="eggBox"></div>
+      <!-- Egg Collection -->
+      <div id="eggBox"></div>
+    </div>
   </div>
 
   <!-- Load Scripts -->

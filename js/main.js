@@ -2,8 +2,45 @@
 class GameController {
   static init() {
     this.setupEventListeners();
+    this.setupMobileOptimizations();
     this.loadGame();
     this.startAutoSave();
+  }
+
+  static setupMobileOptimizations() {
+    // 모바일 스크롤 방지
+    if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
+      // 터치 이벤트로 인한 스크롤 방지
+      document.addEventListener('touchstart', function(e) {
+        if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      document.addEventListener('touchmove', function(e) {
+        // 모달이나 특정 스크롤 영역이 아닌 경우에만 방지
+        if (!e.target.closest('.modal-content') && 
+            !e.target.closest('#eggBox') && 
+            !e.target.closest('.codex-scroll')) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
+      // iOS Safari 바운스 효과 방지
+      document.addEventListener('touchforcechange', function(e) {
+        e.preventDefault();
+      }, { passive: false });
+      
+      // 더블탭 줌 방지
+      let lastTouchEnd = 0;
+      document.addEventListener('touchend', function(e) {
+        const now = (new Date()).getTime();
+        if (now - lastTouchEnd <= 300) {
+          e.preventDefault();
+        }
+        lastTouchEnd = now;
+      }, false);
+    }
   }
 
   static setupEventListeners() {
