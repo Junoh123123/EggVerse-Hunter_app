@@ -1421,43 +1421,70 @@ h1 {
   }
   
   .container {
-    padding: 6px;
+    padding: 8px;
+    justify-content: center;
+    gap: 12px;
   }
   
   h1 {
-    font-size: 1.3rem;
-    margin-bottom: 4px;
+    font-size: 1.4rem;
+    margin-bottom: 12px;
+    margin-top: 8px;
   }
   
   #stats {
-    padding: 6px;
-    margin: 4px auto;
+    padding: 8px;
+    margin: 8px auto;
+    flex-shrink: 0;
   }
   
   .stat-grid {
-    gap: 4px;
-    font-size: 0.65rem;
+    gap: 6px;
+    font-size: 0.7rem;
   }
   
   .stat-item {
-    padding: 4px;
-    min-height: 35px;
+    padding: 6px;
+    min-height: 40px;
+  }
+  
+  .combo-container {
+    min-height: 45px;
+    margin: 8px auto;
+  }
+  
+  #comboDisplay {
+    padding: 8px 16px;
+  }
+  
+  #rarityBar {
+    padding: 8px;
+    margin: 8px auto;
+    font-size: 0.65rem;
   }
   
   .controls {
-    padding: 0 12px;
-    gap: 8px;
+    padding: 0 16px;
+    gap: 10px;
+    margin: 12px 0;
   }
   
   #clickBtn {
-    padding: 12px 16px;
-    font-size: 0.9rem;
-    margin: 0 12px;
+    padding: 16px 20px;
+    font-size: 1.1rem;
+    margin: 0 8px;
+    min-height: 55px;
+  }
+  
+  #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
+    padding: 10px 14px;
+    font-size: 0.75rem;
   }
   
   #eggBox {
-    max-height: 25vh;
-    padding: 6px;
+    max-height: 28vh;
+    padding: 8px;
+    margin-top: 8px;
   }
   
   /* iPhone 16 Pro Max Gacha 모달 최적화 */

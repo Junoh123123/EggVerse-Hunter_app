@@ -18,15 +18,6 @@ class GameController {
           e.preventDefault();
         }
         lastTouchEnd = now;
-        
-        // Hunt Eggs 버튼 상태 리셋 (배경 터치 시만)
-        const clickBtn = document.getElementById('clickBtn');
-        if (clickBtn && !e.target.closest('#clickBtn') && !e.target.closest('.controls')) {
-          // 백그라운드 터치 시에만 기본 상태로 복원
-          clickBtn.style.transform = '';
-          clickBtn.style.boxShadow = '';
-          clickBtn.classList.remove('combo-hit', 'combo-burst', 'combo-epic');
-        }
       }, false);
       
       // 배경에서만 스크롤 방지
