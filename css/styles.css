@@ -515,7 +515,8 @@ h1 {
   overflow: hidden;
   animation: pulseGlow 2s ease-in-out infinite;
   will-change: transform;
-  transform: translate3d(0,0,0);
+  transform: translate3d(0,0,0) scale(1) !important;
+  min-height: 60px;
 }
 
 #clickBtn::before {
@@ -1282,6 +1283,8 @@ h1 {
     margin: 0 8px;
     touch-action: manipulation;
     -webkit-tap-highlight-color: transparent;
+    transform: translate3d(0,0,0) scale(1) !important;
+    min-height: 50px;
   }
   
   #gachaBtn, #galleryToggle, #dexToggle, #rulesToggle {
@@ -1312,6 +1315,12 @@ h1 {
     font-size: 1rem;
   }
   
+  /* Codex 모바일 최적화 */
+  .codex-scroll {
+    max-height: 65vh;
+    overflow-y: auto;
+  }
+  
   .codex-grid {
     grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
     gap: 4px;
@@ -1327,6 +1336,32 @@ h1 {
   
   .codex-egg-info {
     font-size: 0.45rem;
+  }
+  
+  #codexProgress {
+    font-size: 0.8rem;
+    padding: 6px;
+  }
+  
+  /* Rules 모바일 최적화 */
+  .rules-content {
+    font-size: 0.8rem;
+    line-height: 1.5;
+  }
+  
+  .rules-content p {
+    margin-bottom: 8px;
+    padding: 6px;
+  }
+  
+  .exp-table, .shortcuts {
+    margin: 10px 0;
+    padding: 8px;
+  }
+  
+  .exp-grid, .shortcut-grid {
+    font-size: 0.7rem;
+    gap: 3px;
   }
   
   /* Gacha 모달 모바일 최적화 */
@@ -1469,6 +1504,63 @@ h1 {
   /* iPhone 16 Pro Max용 가챠 결과 모달 추가 최적화 */
   .gacha-result-modal {
     padding: 10px !important;
+  }
+  
+  /* iPhone 16 Pro Max Codex & Rules 최적화 */
+  .modal-content {
+    width: 98%;
+    max-height: 85vh;
+    padding: 10px;
+  }
+  
+  .modal-header h3 {
+    font-size: 0.9rem;
+  }
+  
+  .codex-scroll {
+    max-height: 60vh;
+  }
+  
+  .codex-grid {
+    grid-template-columns: repeat(auto-fill, minmax(50px, 1fr));
+    gap: 3px;
+  }
+  
+  .codex-item {
+    height: 65px;
+  }
+  
+  .codex-egg-img {
+    height: 40px;
+  }
+  
+  .codex-egg-info {
+    font-size: 0.4rem;
+  }
+  
+  #codexProgress {
+    font-size: 0.7rem;
+    padding: 4px;
+  }
+  
+  .rules-content {
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+  
+  .rules-content p {
+    margin-bottom: 6px;
+    padding: 4px;
+  }
+  
+  .exp-table, .shortcuts {
+    margin: 8px 0;
+    padding: 6px;
+  }
+  
+  .exp-grid, .shortcut-grid {
+    font-size: 0.65rem;
+    gap: 2px;
   }
 }
 
