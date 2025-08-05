@@ -10,25 +10,39 @@ class GameController {
   static setupMobileOptimizations() {
     // 모바일 스크롤 방지
     if (/iPhone|iPad|iPod|Android/i.test(navigator.userAgent)) {
-      // 터치 이벤트로 인한 스크롤 방지
+      // 터치 이벤트로 인한 스크롤 방지 (버튼과 클릭 가능한 요소 제외)
       document.addEventListener('touchstart', function(e) {
-        if (e.target.tagName !== 'BUTTON' && e.target.tagName !== 'INPUT') {
-          e.preventDefault();
+        // 클릭 가능한 요소들은 허용
+        if (e.target.tagName !== 'BUTTON' && 
+            !e.target.closest('button') &&
+            !e.target.closest('.close-btn') &&
+            !e.target.closest('.modal-header') &&
+            e.target.tagName !== 'INPUT' && 
+            e.target.tagName !== 'SELECT') {
+          // 배경 영역에서만 스크롤 방지
+          if (e.target.classList.contains('container') || 
+              e.target === document.body ||
+              e.target === document.documentElement) {
+            e.preventDefault();
+          }
         }
       }, { passive: false });
       
       document.addEventListener('touchmove', function(e) {
-        // 모달이나 특정 스크롤 영역이 아닌 경우에만 방지
+        // 스크롤이 필요한 영역은 허용
         if (!e.target.closest('.modal-content') && 
             !e.target.closest('#eggBox') && 
-            !e.target.closest('.codex-scroll')) {
+            !e.target.closest('.codex-scroll') &&
+            !e.target.closest('.rules-content')) {
           e.preventDefault();
         }
       }, { passive: false });
       
-      // iOS Safari 바운스 효과 방지
+      // iOS Safari 바운스 효과 방지 (특정 영역에서만)
       document.addEventListener('touchforcechange', function(e) {
-        e.preventDefault();
+        if (!e.target.closest('.modal-content') && !e.target.closest('button')) {
+          e.preventDefault();
+        }
       }, { passive: false });
       
       // 더블탭 줌 방지
