@@ -20,8 +20,20 @@ class GameController {
         lastTouchEnd = now;
       }, false);
       
-      // 배경에서만 스크롤 방지
+      // 핀치 줌 방지 (모든 영역에서)
+      document.addEventListener('touchstart', function(e) {
+        if (e.touches.length > 1) {
+          e.preventDefault();
+        }
+      }, { passive: false });
+      
       document.addEventListener('touchmove', function(e) {
+        // 핀치 줌 방지
+        if (e.touches.length > 1) {
+          e.preventDefault();
+          return;
+        }
+        
         // 스크롤이 필요한 영역은 허용
         if (!e.target.closest('.modal-content') && 
             !e.target.closest('#eggBox') && 
@@ -36,6 +48,19 @@ class GameController {
           }
         }
       }, { passive: false });
+      
+      // 제스처 이벤트 방지 (추가 보안)
+      document.addEventListener('gesturestart', function(e) {
+        e.preventDefault();
+      }, false);
+      
+      document.addEventListener('gesturechange', function(e) {
+        e.preventDefault();
+      }, false);
+      
+      document.addEventListener('gestureend', function(e) {
+        e.preventDefault();
+      }, false);
     }
   }
 

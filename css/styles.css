@@ -698,6 +698,9 @@ h1 {
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 10px;
+  touch-action: pan-y;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .rules-content p {
@@ -799,6 +802,10 @@ h1 {
   justify-content: center;
   align-items: center;
   will-change: opacity;
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 .modal-content {
@@ -816,6 +823,10 @@ h1 {
   animation: modalSlideIn 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   will-change: transform, opacity;
   transform: translate3d(0,0,0);
+  touch-action: manipulation;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
 }
 
 @keyframes modalSlideIn {
@@ -1009,6 +1020,9 @@ h1 {
   max-height: 60vh;
   overflow-y: auto;
   padding-right: 10px;
+  touch-action: pan-y;
+  user-select: text;
+  -webkit-user-select: text;
 }
 
 .codex-grid {
