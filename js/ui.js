@@ -205,7 +205,17 @@ class UI {
 
   static toggleRules() {
     const modal = document.getElementById("rulesModal");
-    modal.style.display = modal.style.display === "none" ? "block" : "none";
+    if (modal.style.display === "none" || modal.style.display === "") {
+      modal.style.display = "block";
+      modal.classList.add("modal-show");
+      // PWA에서 안정적인 중앙정렬을 위한 약간의 지연
+      setTimeout(() => {
+        modal.style.display = "flex";
+      }, 10);
+    } else {
+      modal.style.display = "none";
+      modal.classList.remove("modal-show");
+    }
   }
 
   static toggleCodex() {
@@ -213,11 +223,17 @@ class UI {
     
     if (modal.style.display === "none" || modal.style.display === "") {
       modal.style.display = "block";
+      modal.classList.add("modal-show");
       // 모달이 열릴 때만 진행률 업데이트
       this.updateCodexProgress();
       this.updateCodex();
+      // PWA에서 안정적인 중앙정렬을 위한 약간의 지연
+      setTimeout(() => {
+        modal.style.display = "flex";
+      }, 10);
     } else {
       modal.style.display = "none";
+      modal.classList.remove("modal-show");
     }
   }
 

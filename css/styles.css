@@ -883,6 +883,7 @@ h1 {
 .notification {
   position: fixed;
   right: 20px;
+  top: 60px; /* 상태바 아래 안전한 위치 */
   background: linear-gradient(45deg, rgba(0, 0, 0, 0.9), rgba(30, 30, 60, 0.9));
   border: 2px solid #00ff88;
   color: #00ff88;
@@ -984,9 +985,14 @@ h1 {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
+  display: none !important;
 }
 
 #codexModal[style*="block"] {
+  display: flex !important;
+}
+
+#codexModal.modal-show {
   display: flex !important;
 }
 
@@ -1007,9 +1013,14 @@ h1 {
   left: 0 !important;
   width: 100% !important;
   height: 100% !important;
+  display: none !important;
 }
 
 #rulesModal[style*="block"] {
+  display: flex !important;
+}
+
+#rulesModal.modal-show {
   display: flex !important;
 }
 
@@ -1351,6 +1362,16 @@ h1 {
     flex-shrink: 1;
   }
   
+  /* 상태메시지 모바일 최적화 */
+  .notification {
+    right: 10px;
+    top: 40px;
+    padding: 8px 12px;
+    font-size: 0.75rem;
+    max-width: 280px;
+    border-radius: 8px;
+  }
+  
   /* 모달 최적화 */
   .modal-content {
     width: 95%;
@@ -1611,6 +1632,17 @@ h1 {
     gap: 3px;
   }
   
+  /* iPhone 16 Pro Max PWA 상태메시지 최적화 */
+  .notification {
+    right: 5px;
+    top: 30px;
+    padding: 4px 8px;
+    font-size: 0.6rem;
+    max-width: 200px;
+    border-radius: 6px;
+    border: 1px solid #00ff88;
+  }
+  
   /* iPhone 16 Pro Max PWA Gacha 모달 최적화 */
   .gacha-detail-content {
     padding: 8px;
@@ -1675,10 +1707,27 @@ h1 {
     padding: 6px;
     margin: auto;
     /* PWA에서 중앙정렬 보장 */
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    position: relative !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+  }
+  
+  /* PWA에서 모달 강제 중앙정렬 */
+  #codexModal, #rulesModal {
+    display: none !important;
+  }
+  
+  #codexModal[style*="block"], #rulesModal[style*="block"] {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+  }
+  
+  #codexModal.modal-show, #rulesModal.modal-show {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
   }
   
   .modal-header h3 {
