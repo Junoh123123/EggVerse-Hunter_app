@@ -1,0 +1,19 @@
+{
+  "name": "eggverse-hunter",
+  "version": "1.0.0",
+  "description": "Pokemon-style egg hunting clicker game",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "engines": {
+    "node": "22.x"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  },
+  "keywords": ["game", "clicker", "pokemon", "eggs"],
+  "author": "Junoh123123",
+  "license": "MIT"
+}
