@@ -406,6 +406,17 @@ class GachaSystem {
       if (gachaBtn) {
         gachaBtn.disabled = false;
       }
+      
+      // Hunt Eggs 버튼 상태 초기화
+      const clickBtn = document.getElementById('clickBtn');
+      if (clickBtn) {
+        clickBtn.style.transform = '';
+        clickBtn.style.boxShadow = '';
+        clickBtn.classList.remove('combo-hit', 'combo-burst', 'combo-epic');
+      }
+      
+      // UI 업데이트
+      UI.updateDisplay();
     };
     
     header.appendChild(discoveryStatus);
@@ -427,6 +438,17 @@ class GachaSystem {
         if (gachaBtn) {
           gachaBtn.disabled = false;
         }
+        
+        // Hunt Eggs 버튼 상태 초기화
+        const clickBtn = document.getElementById('clickBtn');
+        if (clickBtn) {
+          clickBtn.style.transform = '';
+          clickBtn.style.boxShadow = '';
+          clickBtn.classList.remove('combo-hit', 'combo-burst', 'combo-epic');
+        }
+        
+        // UI 업데이트
+        UI.updateDisplay();
       }
     };
   }
