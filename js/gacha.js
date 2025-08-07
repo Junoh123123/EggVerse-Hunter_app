@@ -18,7 +18,18 @@ class GachaSystem {
 
   static createEggElement(egg) {
     const container = document.createElement("div");
-    container.className = `egg-item rarity-${GAME_CONFIG.rarities[egg.rarity]}`;
+    const rarityName = GAME_CONFIG.rarities[egg.rarity];
+    const hasEffect = hasSpecialEffect(egg.name);
+    
+    container.className = `egg-item rarity-${rarityName}`;
+    
+    // Add special effect class if egg has one
+    if (hasEffect) {
+      container.classList.add('egg-special-effect');
+      const effect = getSpecialEffect(egg.name);
+      container.classList.add(`effect-${effect.type}`);
+    }
+    
     container.style.cssText = `
       position: relative;
       border-radius: 12px;
@@ -51,7 +62,8 @@ class GachaSystem {
       object-fit: cover;
       border-bottom: 2px solid ${GAME_CONFIG.rarityColors[egg.rarity]};
     `;
-    img.src = egg.img;
+    // Use individual egg image
+    img.src = getEggImage(egg.name, rarityName);
     img.alt = egg.name;
     img.loading = "lazy";
     
@@ -90,7 +102,8 @@ class GachaSystem {
     this.showLuckyDropAnimation(() => {
       const idx = this.pickRarity();
       const eggName = this.pickEggType(idx);
-      const imgUrl = EGG_IMAGES[idx];
+      const rarityName = GAME_CONFIG.rarities[idx];
+      const imgUrl = getEggImage(eggName, rarityName);
       const newEgg = { rarity: idx, img: imgUrl, name: eggName };
       gameState.eggs.push(newEgg);
 
@@ -339,7 +352,16 @@ class GachaSystem {
     `;
     
     const eggImage = document.createElement('img');
-    eggImage.src = egg.img;
+    eggImage.src = getEggImage(egg.name, GAME_CONFIG.rarities[egg.rarity]);
+    
+    // Apply special effects for high-rarity eggs
+    let eggImageClasses = '';
+    if (hasSpecialEffect(egg.name)) {
+      const effect = getSpecialEffect(egg.name);
+      eggImageClasses = `egg-special-effect effect-${effect.type}`;
+    }
+    
+    eggImage.className = eggImageClasses;
     eggImage.style.cssText = `
       width: 160px;
       height: 160px;
@@ -348,6 +370,8 @@ class GachaSystem {
       margin: 15px auto;
       display: block;
       animation: float 2s ease-in-out infinite;
+      position: relative;
+      overflow: visible;
     `;
     
     const eggName = document.createElement('h1');
@@ -487,7 +511,8 @@ class GachaSystem {
     this.showGachaAnimation(() => {
       const idx = this.pickRarity();
       const eggName = this.pickEggType(idx);
-      const imgUrl = EGG_IMAGES[idx];
+      const rarityName = GAME_CONFIG.rarities[idx];
+      const imgUrl = getEggImage(eggName, rarityName);
       const newEgg = { rarity: idx, img: imgUrl, name: eggName };
       gameState.eggs.push(newEgg);
 

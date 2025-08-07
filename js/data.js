@@ -65,14 +65,14 @@ const GAME_CONFIG = {
 // Egg types by rarity (Common has most, Galactic has least)
 const EGG_TYPES = {
   "COMMON": [
-    "Classic", "White", "Brown", "Speckled", "Small", "Plain", "Ordinary", "Basic", "Simple", "Regular",
-    "Cream", "Beige", "Tan", "Ivory", "Vanilla", "Pale", "Natural", "Standard", "Normal", "Common",
-    "Smooth", "Round", "Oval", "Tiny", "Large", "Medium", "Spotted", "Dotted", "Freckled", "Mottled"
+    "Stone", "Grass", "Wood", "Leaf", "Sand", "Clay", "Mud", "Bark", "Moss", "Twig",
+    "Acorn", "Pebble", "Shell", "Coral", "Seaweed", "Driftwood", "Bamboo", "Vine", "Fern", "Root",
+    "Mushroom", "Berry", "Seed", "Nut", "Flower", "Petal", "Branch", "Herb", "Weed", "Sprout"
   ],
   "UNCOMMON": [
-    "Blue", "Green", "Golden", "Silver", "Striped", "Spotted", "Marbled", "Bright",
-    "Yellow", "Orange", "Purple", "Pink", "Turquoise", "Lime", "Magenta", "Coral",
-    "Banded", "Ringed", "Swirled", "Painted", "Glossy", "Shiny", "Lustrous", "Polished"
+    "Flame", "Ice", "Lightning", "Wind", "Earth", "Ocean", "Lava", "Steam",
+    "Frost", "Thunder", "Storm", "Gale", "Wave", "Blizzard", "Volcano", "Quake",
+    "Magma", "Glacier", "Cyclone", "Tempest", "Avalanche", "Mist", "Dew", "Aurora"
   ],
   "RARE": [
     "Crystal", "Rainbow", "Obsidian", "Pearl", "Sapphire", "Ruby",
@@ -85,19 +85,19 @@ const EGG_TYPES = {
     "Wyvern", "Chimera", "Manticore", "Kraken"
   ],
   "UNIQUE": [
-    "Cosmic", "Void", "Solar",
-    "Lunar", "Stellar", "Nova",
-    "Quantum", "Plasma", "Nebular"
+    "Time", "Shadow", "Light",
+    "Chaos", "Order", "Memory",
+    "Dream", "Nightmare", "Echo"
   ],
   "LEGENDARY": [
-    "Ancient", "Divine",
-    "Eternal", "Primordial",
-    "Sacred", "Celestial"
+    "Atlantis", "Excalibur",
+    "Mjolnir", "Pandora",
+    "Eden", "Olympus"
   ],
   "MYSTIC": [
-    "Ethereal",
-    "Spectral", "Astral",
-    "Dimensional"
+    "Soul",
+    "Love", "Essence",
+    "Aura"
   ],
   "GALACTIC": [
     "Nebula", "Supernova", "Blackhole"
@@ -116,10 +116,182 @@ const EGG_IMAGES = [
   "https://images.unsplash.com/photo-1446776877081-d282a0f896e2?w=200&h=200&fit=crop"
 ];
 
+// Individual egg images - each egg has its own unique image
+const INDIVIDUAL_EGG_IMAGES = {
+  // COMMON eggs
+  "Stone": "./images/eggs/common/stone.png",
+  "Grass": "./images/eggs/common/grass.png",
+  "Wood": "./images/eggs/common/wood.png",
+  "Leaf": "./images/eggs/common/leaf.png",
+  "Sand": "./images/eggs/common/sand.png",
+  "Clay": "./images/eggs/common/clay.png",
+  "Mud": "./images/eggs/common/mud.png",
+  "Bark": "./images/eggs/common/bark.png",
+  "Moss": "./images/eggs/common/moss.png",
+  "Twig": "./images/eggs/common/twig.png",
+  "Acorn": "./images/eggs/common/acorn.png",
+  "Pebble": "./images/eggs/common/pebble.png",
+  "Shell": "./images/eggs/common/shell.png",
+  "Coral": "./images/eggs/common/coral.png",
+  "Seaweed": "./images/eggs/common/seaweed.png",
+  "Driftwood": "./images/eggs/common/driftwood.png",
+  "Bamboo": "./images/eggs/common/bamboo.png",
+  "Vine": "./images/eggs/common/vine.png",
+  "Fern": "./images/eggs/common/fern.png",
+  "Root": "./images/eggs/common/root.png",
+  "Mushroom": "./images/eggs/common/mushroom.png",
+  "Berry": "./images/eggs/common/berry.png",
+  "Seed": "./images/eggs/common/seed.png",
+  "Nut": "./images/eggs/common/nut.png",
+  "Flower": "./images/eggs/common/flower.png",
+  "Petal": "./images/eggs/common/petal.png",
+  "Branch": "./images/eggs/common/branch.png",
+  "Herb": "./images/eggs/common/herb.png",
+  "Weed": "./images/eggs/common/weed.png",
+  "Sprout": "./images/eggs/common/sprout.png",
+  
+  // UNCOMMON eggs
+  "Flame": "./images/eggs/uncommon/flame.png",
+  "Ice": "./images/eggs/uncommon/ice.png",
+  "Lightning": "./images/eggs/uncommon/lightning.png",
+  "Wind": "./images/eggs/uncommon/wind.png",
+  "Earth": "./images/eggs/uncommon/earth.png",
+  "Ocean": "./images/eggs/uncommon/ocean.png",
+  "Lava": "./images/eggs/uncommon/lava.png",
+  "Steam": "./images/eggs/uncommon/steam.png",
+  "Frost": "./images/eggs/uncommon/frost.png",
+  "Thunder": "./images/eggs/uncommon/thunder.png",
+  "Storm": "./images/eggs/uncommon/storm.png",
+  "Gale": "./images/eggs/uncommon/gale.png",
+  "Wave": "./images/eggs/uncommon/wave.png",
+  "Blizzard": "./images/eggs/uncommon/blizzard.png",
+  "Volcano": "./images/eggs/uncommon/volcano.png",
+  "Quake": "./images/eggs/uncommon/quake.png",
+  "Magma": "./images/eggs/uncommon/magma.png",
+  "Glacier": "./images/eggs/uncommon/glacier.png",
+  "Cyclone": "./images/eggs/uncommon/cyclone.png",
+  "Tempest": "./images/eggs/uncommon/tempest.png",
+  "Avalanche": "./images/eggs/uncommon/avalanche.png",
+  "Mist": "./images/eggs/uncommon/mist.png",
+  "Dew": "./images/eggs/uncommon/dew.png",
+  "Aurora": "./images/eggs/uncommon/aurora.png",
+  
+  // RARE eggs - Gemstone/Crystal theme
+  "Crystal": "./images/eggs/rare/crystal.png",
+  "Rainbow": "./images/eggs/rare/rainbow.png",
+  "Obsidian": "./images/eggs/rare/obsidian.png",
+  "Pearl": "./images/eggs/rare/pearl.png",
+  "Sapphire": "./images/eggs/rare/sapphire.png",
+  "Ruby": "./images/eggs/rare/ruby.png",
+  "Emerald": "./images/eggs/rare/emerald.png",
+  "Diamond": "./images/eggs/rare/diamond.png",
+  "Opal": "./images/eggs/rare/opal.png",
+  "Amethyst": "./images/eggs/rare/amethyst.png",
+  "Topaz": "./images/eggs/rare/topaz.png",
+  "Garnet": "./images/eggs/rare/garnet.png",
+  "Jade": "./images/eggs/rare/jade.png",
+  "Moonstone": "./images/eggs/rare/moonstone.png",
+  "Sunstone": "./images/eggs/rare/sunstone.png",
+  "Aquamarine": "./images/eggs/rare/aquamarine.png",
+  "Peridot": "./images/eggs/rare/peridot.png",
+  "Onyx": "./images/eggs/rare/onyx.png",
+  
+  // EPIC eggs - Mythical Creatures
+  "Dragon": "./images/eggs/epic/dragon.png",
+  "Phoenix": "./images/eggs/epic/phoenix.png",
+  "Unicorn": "./images/eggs/epic/unicorn.png",
+  "Griffin": "./images/eggs/epic/griffin.png",
+  "Pegasus": "./images/eggs/epic/pegasus.png",
+  "Sphinx": "./images/eggs/epic/sphinx.png",
+  "Hydra": "./images/eggs/epic/hydra.png",
+  "Basilisk": "./images/eggs/epic/basilisk.png",
+  "Wyvern": "./images/eggs/epic/wyvern.png",
+  "Chimera": "./images/eggs/epic/chimera.png",
+  "Manticore": "./images/eggs/epic/manticore.png",
+  "Kraken": "./images/eggs/epic/kraken.png",
+  
+  // UNIQUE eggs - Abstract Concepts
+  "Time": "./images/eggs/unique/time.png",
+  "Shadow": "./images/eggs/unique/shadow.png",
+  "Light": "./images/eggs/unique/light.png",
+  "Chaos": "./images/eggs/unique/chaos.png",
+  "Order": "./images/eggs/unique/order.png",
+  "Memory": "./images/eggs/unique/memory.png",
+  "Dream": "./images/eggs/unique/dream.png",
+  "Nightmare": "./images/eggs/unique/nightmare.png",
+  "Echo": "./images/eggs/unique/echo.png",
+  
+  // LEGENDARY eggs - Legendary Places/Artifacts
+  "Atlantis": "./images/eggs/legendary/atlantis.png",
+  "Excalibur": "./images/eggs/legendary/excalibur.png",
+  "Mjolnir": "./images/eggs/legendary/mjolnir.png",
+  "Pandora": "./images/eggs/legendary/pandora.png",
+  "Eden": "./images/eggs/legendary/eden.png",
+  "Olympus": "./images/eggs/legendary/olympus.png",
+  
+  // MYSTIC eggs - Spiritual/Soul themes
+  "Soul": "./images/eggs/mystic/soul.png",
+  "Love": "./images/eggs/mystic/love.png",
+  "Essence": "./images/eggs/mystic/essence.png",
+  "Aura": "./images/eggs/mystic/aura.png",
+  
+  // GALACTIC eggs - Space phenomena
+  "Nebula": "./images/eggs/galactic/nebula.png",
+  "Supernova": "./images/eggs/galactic/supernova.png",
+  "Blackhole": "./images/eggs/galactic/blackhole.png"
+};
+
+// Special effects for high-rarity eggs (LEGENDARY and above)
+const EGG_SPECIAL_EFFECTS = {
+  // LEGENDARY effects
+  "Atlantis": { type: "glow", color: "#00d4ff", intensity: "medium", animation: "pulse" },
+  "Excalibur": { type: "shimmer", color: "#ffd700", intensity: "medium", animation: "shine" },
+  "Mjolnir": { type: "lightning", color: "#4169e1", intensity: "medium", animation: "spark" },
+  "Pandora": { type: "mystery", color: "#9932cc", intensity: "medium", animation: "swirl" },
+  "Eden": { type: "bloom", color: "#32cd32", intensity: "medium", animation: "grow" },
+  "Olympus": { type: "divine", color: "#ffd700", intensity: "medium", animation: "ascend" },
+  
+  // MYSTIC effects
+  "Soul": { type: "ethereal", color: "#e6e6fa", intensity: "high", animation: "float" },
+  "Love": { type: "heartly", color: "#ff69b4", intensity: "high", animation: "pulse" },
+  "Essence": { type: "energy", color: "#dda0dd", intensity: "high", animation: "flow" },
+  "Aura": { type: "radiance", color: "#da70d6", intensity: "high", animation: "radiate" },
+  
+  // GALACTIC effects
+  "Nebula": { type: "cosmic", color: "#ff1493", intensity: "extreme", animation: "nebula" },
+  "Supernova": { type: "explosion", color: "#ffd700", intensity: "extreme", animation: "burst" },
+  "Blackhole": { type: "void", color: "#000000", intensity: "extreme", animation: "absorb" }
+};
+
+// Helper function to get egg image
+const getEggImage = (eggName, rarity) => {
+  return INDIVIDUAL_EGG_IMAGES[eggName] || EGG_IMAGES[GAME_CONFIG.rarities.indexOf(rarity)] || EGG_IMAGES[0];
+};
+
+// Helper function to check if egg has special effects
+const hasSpecialEffect = (eggName) => {
+  return EGG_SPECIAL_EFFECTS.hasOwnProperty(eggName);
+};
+
+// Helper function to get special effect data
+const getSpecialEffect = (eggName) => {
+  return EGG_SPECIAL_EFFECTS[eggName] || null;
+};
+
 // Utility functions
 const rand = () => Math.random(); // 0-1 범위로 수정 (기존 * 100은 확률 계산 오류 원인)
 
 // Export for use in other modules
 if (typeof module !== 'undefined' && module.exports) {
-  module.exports = { GAME_CONFIG, EGG_TYPES, EGG_IMAGES, rand };
+  module.exports = { 
+    GAME_CONFIG, 
+    EGG_TYPES, 
+    EGG_IMAGES, 
+    INDIVIDUAL_EGG_IMAGES,
+    EGG_SPECIAL_EFFECTS,
+    getEggImage,
+    hasSpecialEffect,
+    getSpecialEffect,
+    rand 
+  };
 }

@@ -296,13 +296,26 @@ class UI {
         item.className = `egg-item ${isDiscovered ? 'discovered' : 'undiscovered'}`;
         item.style.borderColor = GAME_CONFIG.rarityColors[rarityIdx];
         
+        // Add special effects only for discovered high-rarity eggs
+        if (isDiscovered && hasSpecialEffect(eggName)) {
+          item.classList.add('egg-special-effect');
+          const effect = getSpecialEffect(eggName);
+          item.classList.add(`effect-${effect.type}`);
+        }
+        
+        // Add egg-unknown class for undiscovered eggs to disable effects
+        if (!isDiscovered) {
+          item.classList.add('egg-unknown');
+        }
+        
         const img = document.createElement("img");
         img.className = "egg-image";
         img.loading = "lazy";
         img.decoding = "async";
         
         if (isDiscovered) {
-          img.src = EGG_IMAGES[rarityIdx];
+          // Use individual egg image for discovered eggs
+          img.src = getEggImage(eggName, rarity);
           img.onerror = function() {
             this.src = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='40' height='40' viewBox='0 0 40 40'%3E%3Crect width='40' height='40' fill='%23" + GAME_CONFIG.rarityColors[rarityIdx].substring(1) + "'/%3E%3Ctext x='20' y='25' text-anchor='middle' fill='white' font-size='12'%3E🥚%3C/text%3E%3C/svg%3E";
           };
